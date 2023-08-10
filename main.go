@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/xenedium/hps_logs_parser/iso8583/parser"
 	"github.com/xenedium/hps_logs_parser/iso8583/types"
 )
 
-func main() {
+func typest() {
 	instance := types.Message{
 		MTI:    types.MTI{Version: 2, Class: 0, Function: 0, Origin: 0},
 		Bitmap: []byte{0x00, 0x00, 0x00, 0x00, 0x00},
@@ -59,5 +61,12 @@ func main() {
 	if ok {
 		fmt.Println("Response Code Message:", responseCodeMessage)
 	}
+}
 
+func main() {
+	lines := parser.ExtractFLD37(os.Stdin)
+
+	for _, line := range lines {
+		fmt.Println(line)
+	}
 }
