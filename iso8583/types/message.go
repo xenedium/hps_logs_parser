@@ -42,12 +42,20 @@ func (m *message) GetField(field int) (Field, bool) {
 }
 
 func (m *message) SetField(field int, value string) *message {
-	m.Fields[field] = Field{Length: len(value), Value: value}
+	m.Fields[field] = Field{Length: len(value), Value: value, Raw: []byte(value)}
 	return m
 }
 
 func (m *message) GetRaw() []byte {
 	return m.Raw
+}
+
+func (m *message) GetResponseCodeMessage() (string, bool) {
+	f, ok := m.Fields[39]
+	if !ok {
+		return "", false
+	}
+	return ResponseCodeMap[f.Value], true
 }
 
 type Message = message
