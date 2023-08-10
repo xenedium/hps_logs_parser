@@ -8,7 +8,7 @@ import (
 
 func main() {
 	instance := types.Message{
-		MTI:    "0200",
+		MTI:    types.MTI{Version: 2, Class: 0, Function: 0, Origin: 0},
 		Bitmap: []byte{0x00, 0x00, 0x00, 0x00, 0x00},
 		Fields: map[int]string{
 			2:  "1234567890123456",
@@ -32,9 +32,10 @@ func main() {
 	fmt.Println("Bitmap:", instance.Bitmap)
 	fmt.Println("Fields:", instance.Fields)
 	fmt.Println("Raw:", instance.Raw)
+	fmt.Println("MTI:", instance.MTI)
 
-	fmt.Println("isRequest:", types.IsRequest(&instance))
-	fmt.Println("isResponse:", types.IsResponse(&instance))
-	fmt.Println("getOrigin:", types.GetOrigin(&instance))
-	fmt.Println("getOriginName:", types.GetOriginName(&instance))
+	fmt.Println("MTI Class:", instance.GetMTIClassName())
+	fmt.Println("MTI Function:", instance.GetMTIFunctionName())
+	fmt.Println("MTI Origin:", instance.GetMTIOriginName())
+
 }
