@@ -3,7 +3,7 @@ package types
 type message struct {
 	MTI    mti
 	Bitmap []byte
-	Fields map[int]string
+	Fields map[int]field
 	Raw    []byte
 }
 

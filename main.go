@@ -10,20 +10,10 @@ func main() {
 	instance := types.Message{
 		MTI:    types.MTI{Version: 2, Class: 0, Function: 0, Origin: 0},
 		Bitmap: []byte{0x00, 0x00, 0x00, 0x00, 0x00},
-		Fields: map[int]string{
-			2:  "1234567890123456",
-			3:  "000000",
-			4:  "000000000000",
-			7:  "1234567890",
-			11: "000001",
-			12: "000000",
-			13: "0101",
-			15: "0101",
-			18: "0000",
-			22: "012",
-			25: "00",
-			26: "12",
-			28: "C00000000",
+		Fields: map[int]types.Field{
+			2: {Length: 6, Value: "123456"},
+			3: {Length: 6, Value: "123456"},
+			4: {Length: 6, Value: "123456"},
 		},
 		Raw: []byte{0x02, 0x00, 0x00, 0x00, 0x00, 0x00},
 	}
