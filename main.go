@@ -64,7 +64,7 @@ func typest() {
 }
 
 func main() {
-	lines := parser.ExtractFLD37(os.Stdin)
+	lines := parser.ExtractDumpPostilions(os.Stdin)
 
 	for _, line := range lines {
 		fmt.Println(line)

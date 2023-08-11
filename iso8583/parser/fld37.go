@@ -10,7 +10,7 @@ func ExtractFLD37(f *os.File) []string {
 	f.Seek(0, 0)
 
 	scanner := bufio.NewScanner(f)
-	fld37_regexp := regexp.MustCompile(`.*FLD \(037\).*\[(.*?)\]`)
+	fld37_regexp := regexp.MustCompile(fld37_DumpPostilion_regex)
 
 	var fld37 []string
 
