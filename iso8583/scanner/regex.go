@@ -1,4 +1,4 @@
-package parser
+package scanner
 
 /*
 format:
@@ -22,13 +22,13 @@ date time process_id thread_id|level| message
 // match[4] = thread_id
 // match[5] = level
 // match[6] = message
-const line_regex string = `/\d+ \d+ \d+ \d+\|\w\|.*\./gm`
+const lineRegex string = `/\d+ \d+ \d+ \d+\|\w\|.*\./gm`
 
-const fld37_DumpPostilion_regex string = `.*FLD \(037\).*\[(.*?)\]`
+const fld37DumpPostilionRegex string = `.*FLD \(037\).*\[(.*?)\]`
 
 // const dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.\n(\d+\s\d+\s\d+\s\d+\|\w\|\s*-.*\.\n)*\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
 
-const start_dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.`
-const end_dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
-const data_dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*-+.*\.`
-const header_dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*-+\s*\.`
+const startDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.`
+const endDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
+const dataDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*-+.*\.`
+const headerDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*-+\s*\.`

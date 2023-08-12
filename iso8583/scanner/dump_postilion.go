@@ -1,4 +1,4 @@
-package parser
+package scanner
 
 import (
 	"bufio"
@@ -15,7 +15,7 @@ func ExtractDumpPostilions(f *os.File) []string {
 
 	scanner := bufio.NewScanner(f)
 
-	headerMatcher := regexp.MustCompile(start_dump_postilion_regex)
+	headerMatcher := regexp.MustCompile(startDumpPostilionRegex)
 
 	var dumpPostilions []string
 
@@ -29,7 +29,7 @@ func ExtractDumpPostilions(f *os.File) []string {
 }
 
 func readDumpPostilion(scanner *bufio.Scanner) string {
-	dumpPostilionHeader := regexp.MustCompile(data_dump_postilion_regex)
+	dumpPostilionHeader := regexp.MustCompile(dataDumpPostilionRegex)
 	dumpPostilionStr := strings.Builder{}
 	for scanner.Scan() {
 		if dumpPostilionHeader.MatchString(scanner.Text()) {
