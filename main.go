@@ -64,7 +64,14 @@ func typest() {
 }
 
 func main() {
-	lines := parser.ExtractDumpPostilions(os.Stdin)
+	f, err := os.Open("logs/POSTILION.TRC000")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer f.Close()
+
+	lines := parser.ExtractDumpPostilions(f)
 
 	for _, line := range lines {
 		fmt.Println(line)
