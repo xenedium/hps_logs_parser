@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// ExtractDumpPostilions should extract all dump_postilion from log file
 func ExtractDumpPostilions(f *os.File) []string {
 	_, err := f.Seek(0, 0)
 	if err != nil {

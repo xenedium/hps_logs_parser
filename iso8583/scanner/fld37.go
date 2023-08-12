@@ -6,6 +6,7 @@ import (
 	"regexp"
 )
 
+// ExtractFLD37 should extract all fld37 from all different types of dumps not only from dump_postilion
 func ExtractFLD37(f *os.File) []string {
 	_, err := f.Seek(0, 0)
 	if err != nil {

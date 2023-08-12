@@ -28,7 +28,11 @@ const fld37DumpPostilionRegex string = `.*FLD \(037\).*\[(.*?)\]`
 
 // const dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.\n(\d+\s\d+\s\d+\s\d+\|\w\|\s*-.*\.\n)*\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
 
+// startDumpPostilionRegex the regex to match the start of dump_postilion
 const startDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.`
+
+// endDumpPostilionRegex the regex to match the end of dump_postilion
 const endDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
+
+// dataDumpPostilionRegex the regex to match the data fields of dump_postilion
 const dataDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*-+.*\.`
-const headerDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*-+\s*\.`
