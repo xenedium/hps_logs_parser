@@ -2,19 +2,18 @@ package scanner
 
 import (
 	"bufio"
-	"os"
 	"regexp"
 	"strings"
 )
 
 // ExtractDumpPostilions should extract all dump_postilion from log file
-func ExtractDumpPostilions(f *os.File) []string {
-	_, err := f.Seek(0, 0)
+func (s *Scanner) extractDumpPostilions() []string {
+	_, err := s.File.Seek(0, 0)
 	if err != nil {
 		return nil
 	}
 
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(s.File)
 
 	headerMatcher := regexp.MustCompile(startDumpPostilionRegex)
 
@@ -40,4 +39,11 @@ func readDumpPostilion(scanner *bufio.Scanner) string {
 		break
 	}
 	return dumpPostilionStr.String()
+}
+
+func (s *Scanner) GetPostilionDumps() []string {
+	if s.dumpPostilions == nil {
+		s.dumpPostilions = s.extractDumpPostilions()
+	}
+	return s.dumpPostilions
 }

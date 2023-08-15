@@ -72,11 +72,15 @@ func main() {
 	}
 	defer f.Close()
 
-	lines := scanner.ExtractDumpPostilions(f)
+	scanner := scanner.Scanner{
+		File: f,
+	}
+
+	lines := scanner.GetPostilionDumps()
 
 	for _, line := range lines {
 		fmt.Println(line)
 	}
 
-	fmt.Println(scanner.ExtractFLD37(f))
+	fmt.Println(scanner.GetFLD37())
 }

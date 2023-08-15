@@ -2,17 +2,16 @@ package scanner
 
 import (
 	"bufio"
-	"os"
 	"regexp"
 )
 
 // ExtractFLD37 should extract all fld37 from all different types of dumps not only from dump_postilion
-func ExtractFLD37(f *os.File) []string {
-	_, err := f.Seek(0, 0)
+func (s *Scanner) extractFLD37() []string {
+	_, err := s.File.Seek(0, 0)
 	if err != nil {
 		return nil
 	}
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(s.File)
 	fld37PostRegexp := regexp.MustCompile(fld37DumpPostilionRegex)
 	fld37XmlRegexp := regexp.MustCompile(fld37XmlDumpRegex)
 	fld37BuffRegexp := regexp.MustCompile(fld37DumpBufferRegex)
@@ -46,4 +45,11 @@ func isElementExist(s []string, str string) bool {
 		}
 	}
 	return false
+}
+
+func (s *Scanner) GetFLD37() []string {
+	if s.fld37 == nil {
+		s.fld37 = s.extractFLD37()
+	}
+	return s.fld37
 }
