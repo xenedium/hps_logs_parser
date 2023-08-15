@@ -25,6 +25,8 @@ date time process_id thread_id|level| message
 const lineRegex string = `/\d+ \d+ \d+ \d+\|\w\|.*\./gm`
 
 const fld37DumpPostilionRegex string = `.*FLD \(037\).*\[(.*?)\]`
+const fld37XmlDumpRegex string = `.*<Field Number="037" Value="(\d*)"\/>`
+const fld37DumpBufferRegex string = `.*037 {\s*RRN} \d* (\d*)\s*\.`
 
 // const dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.\n(\d+\s\d+\s\d+\s\d+\|\w\|\s*-.*\.\n)*\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
 

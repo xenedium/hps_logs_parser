@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
 	"os"
+
+	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
 
 	"github.com/xenedium/hps_logs_parser/iso8583/types"
 )
@@ -76,4 +77,6 @@ func main() {
 	for _, line := range lines {
 		fmt.Println(line)
 	}
+
+	fmt.Println(scanner.ExtractFLD37(f))
 }
