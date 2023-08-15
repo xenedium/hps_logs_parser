@@ -22,7 +22,7 @@ date time process_id thread_id|level| message
 // match[4] = thread_id
 // match[5] = level
 // match[6] = message
-const lineRegex string = `/\d+ \d+ \d+ \d+\|\w\|.*\./gm`
+const lineRegex string = `/(\d+) (\d+) (\d+) (\d+)\|(\w)\|(.*)\./gm`
 
 const fld37DumpPostilionRegex string = `.*FLD \(037\).*\[(.*?)\]`
 const fld37XmlDumpRegex string = `.*<Field Number="037" Value="(\d*)"\/>`
