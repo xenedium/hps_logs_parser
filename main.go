@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/xenedium/hps_logs_parser/iso8583/parser"
 	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
-
 	"github.com/xenedium/hps_logs_parser/iso8583/types"
 )
 
@@ -83,4 +83,7 @@ func main() {
 	}
 
 	fmt.Println(scanner.GetFLD37())
+
+	parser := parser.Parser{}
+	fmt.Println(parser.Parse(f))
 }
