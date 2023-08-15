@@ -12,14 +12,14 @@ import (
 func typest() {
 	instance := types.Message{
 		MTI:    types.MTI{Version: 2, Class: 0, Function: 0, Origin: 0},
-		Bitmap: []byte{0x00, 0x00, 0x00, 0x00, 0x00},
+		Bitmap: "F23A40010A0000000000000",
 		Fields: map[int]types.Field{
 			2:  {Length: 6, Value: "123456"},
 			3:  {Length: 6, Value: "123456"},
 			4:  {Length: 6, Value: "123456"},
 			39: {Length: 2, Value: "000"},
 		},
-		Raw: []byte{0x02, 0x00, 0x00, 0x00, 0x00, 0x00},
+		Raw: "0200F23A40010A0000000000000",
 	}
 
 	fmt.Println("MTI:", instance.MTI)

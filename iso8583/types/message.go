@@ -2,9 +2,9 @@ package types
 
 type message struct {
 	MTI    mti
-	Bitmap []byte
+	Bitmap string
 	Fields map[int]field
-	Raw    []byte
+	Raw    string
 }
 
 func (m *message) String() string {
@@ -46,7 +46,7 @@ func (m *message) SetField(field int, value string) *message {
 	return m
 }
 
-func (m *message) GetRaw() []byte {
+func (m *message) GetRaw() string {
 	return m.Raw
 }
 
