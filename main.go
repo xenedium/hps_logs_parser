@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/xenedium/hps_logs_parser/iso8583/parser"
 	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
 	"github.com/xenedium/hps_logs_parser/iso8583/types"
 )
@@ -34,18 +33,15 @@ func typest() {
 	fmt.Println("Is Request:", instance.IsRequest())
 	fmt.Println("Is Response:", instance.IsResponse())
 
-	field, ok := instance.GetField(2)
-	if ok {
+	if field, ok := instance.GetField(2); ok {
 		fmt.Println("Field 2:", field)
 	}
 
-	field, ok = instance.GetField(3)
-	if ok {
+	if field, ok := instance.GetField(3); ok {
 		fmt.Println("Field 3:", field)
 	}
 
-	field, ok = instance.GetField(99)
-	if ok {
+	if field, ok := instance.GetField(99); ok {
 		fmt.Println("Field 99:", field)
 	} else {
 		fmt.Println("Field 99 not found")
@@ -53,8 +49,7 @@ func typest() {
 
 	instance.SetField(2, "654321")
 
-	field, ok = instance.GetField(2)
-	if ok {
+	if field, ok := instance.GetField(2); ok {
 		fmt.Println("Field 2:", field)
 	}
 
@@ -76,14 +71,9 @@ func main() {
 		File: f,
 	}
 
-	lines := scanner.GetPostilionDumps()
-
-	for _, line := range lines {
-		fmt.Println(line)
-	}
-
-	fmt.Println(scanner.GetFLD37())
-
-	parser := parser.Parser{}
-	fmt.Println(parser.Parse(f))
+	scanner.Scan()
+	/*
+		for _, dumpPostilion := range scanner.DumpPostilions {
+			fmt.Println(dumpPostilion)
+		}*/
 }

@@ -5,6 +5,7 @@ import (
 	"regexp"
 )
 
+// TODO: rewrite this function to respect the Open-Closed Principle
 // ExtractFLD37 should extract all fld37 from all different types of dumps not only from dump_postilion
 func (s *Scanner) extractFLD37() []string {
 	_, err := s.File.Seek(0, 0)
@@ -48,8 +49,8 @@ func isElementExist(s []string, str string) bool {
 }
 
 func (s *Scanner) GetFLD37() []string {
-	if s.fld37 == nil {
-		s.fld37 = s.extractFLD37()
+	if s.Fld37 == nil {
+		s.Fld37 = s.extractFLD37()
 	}
-	return s.fld37
+	return s.Fld37
 }
