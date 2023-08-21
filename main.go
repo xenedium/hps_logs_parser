@@ -67,13 +67,13 @@ func main() {
 	}
 	defer f.Close()
 
-	scanner := scanner.Scanner{
+	fScanner := scanner.Scanner{
 		File: f,
 	}
 
-	scanner.Scan()
-	/*
-		for _, dumpPostilion := range scanner.DumpPostilions {
-			fmt.Println(dumpPostilion)
-		}*/
+	fScanner.Scan()
+
+	for _, dumpPostilion := range fScanner.DumpPostilions {
+		fmt.Println(dumpPostilion)
+	}
 }

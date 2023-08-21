@@ -2,7 +2,6 @@ package scanner
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 	"regexp"
@@ -12,6 +11,7 @@ type scanner struct {
 	File           *os.File
 	Fld37          []string
 	DumpPostilions []string
+	DumpXmls       []string
 }
 type matcherHandlerArray struct {
 	Matcher *regexp.Regexp
@@ -35,10 +35,14 @@ func (s *scanner) Scan() {
 			Handler: readDumpPostilion,
 			Array:   &s.DumpPostilions,
 		},
+		{
+			Matcher: regexp.MustCompile(startXmlDumpRegex),
+			Handler: readDumpXml,
+			Array:   &s.DumpXmls,
+		},
 	}
 
 	for scanner.Scan() {
-		fmt.Println(scanner.Text())
 		for _, mha := range mhaArray {
 			if mha.Matcher.MatchString(scanner.Text()) {
 				*mha.Array = append(*mha.Array, mha.Handler(scanner))

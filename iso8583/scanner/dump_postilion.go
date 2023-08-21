@@ -7,14 +7,13 @@ import (
 )
 
 func readDumpPostilion(scanner *bufio.Scanner) string {
-	dumpPostilionHeader := regexp.MustCompile(dataDumpPostilionRegex)
+	endDumpPostilionMatcher := regexp.MustCompile(endDumpPostilionRegex)
 	dumpPostilionStr := strings.Builder{}
 	for scanner.Scan() {
-		if dumpPostilionHeader.MatchString(scanner.Text()) {
-			dumpPostilionStr.WriteString(scanner.Text() + "\n")
-			continue
+		if endDumpPostilionMatcher.MatchString(scanner.Text()) {
+			break
 		}
-		break
+		dumpPostilionStr.WriteString(scanner.Text() + "\n")
 	}
 	return dumpPostilionStr.String()
 }
