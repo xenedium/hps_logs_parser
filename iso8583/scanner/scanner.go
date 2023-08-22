@@ -12,6 +12,8 @@ type scanner struct {
 	Fld37          []string
 	DumpPostilions []string
 	DumpXmls       []string
+	DumpIsos       []string
+	DumpTlvBuffers []string
 }
 type matcherHandlerArray struct {
 	Matcher *regexp.Regexp
@@ -28,17 +30,27 @@ func (s *scanner) Scan() {
 	scanner := bufio.NewScanner(s.File)
 
 	// TODO: add more matchers and handlers
-	// ALL THE HANDLERS MUST RETURN A STRING
+	// ALL THE HANDLERS MUST RETURN A string AND RECEIVE A *bufio.Scanner
 	mhaArray := []matcherHandlerArray{
 		{
 			Matcher: regexp.MustCompile(startDumpPostilionRegex),
-			Handler: readDumpPostilion,
+			Handler: getGenericHandler(endDumpPostilionRegex),
 			Array:   &s.DumpPostilions,
 		},
 		{
 			Matcher: regexp.MustCompile(startXmlDumpRegex),
-			Handler: readDumpXml,
+			Handler: getGenericHandler(endXmlDumpRegex),
 			Array:   &s.DumpXmls,
+		},
+		{
+			Matcher: regexp.MustCompile(startDumpIso),
+			Handler: getGenericHandler(endDumpIso),
+			Array:   &s.DumpIsos,
+		},
+		{
+			Matcher: regexp.MustCompile(startDumpTlvBuffer),
+			Handler: getGenericHandler(endDumpTlvBuffer),
+			Array:   &s.DumpTlvBuffers,
 		},
 	}
 

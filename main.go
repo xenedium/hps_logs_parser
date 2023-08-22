@@ -73,7 +73,7 @@ func main() {
 
 	fScanner.Scan()
 
-	for _, dumpPostilion := range fScanner.DumpPostilions {
+	for _, dumpPostilion := range fScanner.DumpTlvBuffers {
 		fmt.Println(dumpPostilion)
 	}
 }

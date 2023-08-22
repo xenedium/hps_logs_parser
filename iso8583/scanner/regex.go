@@ -22,25 +22,19 @@ date time process_id thread_id|level| message
 // match[4] = thread_id
 // match[5] = level
 // match[6] = message
-// const lineRegex string = `/(\d+) (\d+) (\d+) (\d+)\|(\w)\|(.*)\./gm`
 
 const fld37DumpPostilionRegex string = `.*FLD \(037\).*\[(.*?)\]`
 const fld37XmlDumpRegex string = `.*<Field Number="037" Value="(\d*)"\/>`
 const fld37DumpBufferRegex string = `.*037 {\s*RRN} \d* (\d*)\s*\.`
 
-// const dump_postilion_regex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.\n(\d+\s\d+\s\d+\s\d+\|\w\|\s*-.*\.\n)*\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
-
-// startDumpPostilionRegex the regex to match the start of dump_postilion
 const startDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpPostilion\(\)\s*\.`
-
-// endDumpPostilionRegex the regex to match the end of dump_postilion
 const endDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpPostilion\(\)\s*\.`
 
-// dataDumpPostilionRegex the regex to match the data fields of dump_postilion
-// const dataDumpPostilionRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*-+.*\.`
-
-// startXMLDumpRegex the regex to match the start of xml_dump
 const startXmlDumpRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpFile\(\)\s*\.`
-
-// endXMLDumpRegex the regex to match the end of xml_dump
 const endXmlDumpRegex string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpFile\(\)\s*\.`
+
+const startDumpIso string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*DumpIso\(\)\s*\.`
+const endDumpIso string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpIso\(\)\s*\.`
+
+const startDumpTlvBuffer string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*PrintTlvBuffer\s*\(\)\s*\.`
+const endDumpTlvBuffer string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*PrintTlvBuffer\s*\(\)\s*\.`
