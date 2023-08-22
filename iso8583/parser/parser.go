@@ -1,31 +1,48 @@
 package parser
 
 import (
-	"os"
-
+	"fmt"
 	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
 	"github.com/xenedium/hps_logs_parser/iso8583/types"
+	"os"
+	"sync"
 )
 
 type parser struct {
-	scanner  scanner.Scanner
+	scanners []*scanner.Scanner
 	messages []types.Message
+	Files    []*os.File
 }
 
-func (p *parser) Parse(f *os.File) []types.Message {
-	p.scanner = scanner.Scanner{File: f}
-	fld37s := p.scanner.GetFLD37()                  // extract all the transaction IDs from different types of dumps
-	p.messages = make([]types.Message, len(fld37s)) // allocate an array depending on the number of transaction IDs found
-
-	for i, fld37 := range fld37s {
-		p.messages[i] = types.Message{
-			Fields: map[int]types.Field{
-				37: {
-					Length: len(fld37),
-					Value:  fld37,
-					Raw:    []byte(fld37),
-				},
-			},
+func (p *parser) Parse() []types.Message {
+	waitGroup := sync.WaitGroup{}
+	for _, file := range p.Files {
+		waitGroup.Add(1)
+		fileScanner := new(scanner.Scanner)
+		fileScanner.File = file
+		go func() {
+			defer waitGroup.Done()
+			fileScanner.Scan()
+		}()
+		p.scanners = append(p.scanners, fileScanner)
+	}
+	waitGroup.Wait()
+	for _, fileScanner := range p.scanners {
+		for _, postilionDump := range fileScanner.DumpPostilions {
+			// TODO: parse postilion dump
+			fmt.Println(postilionDump)
+		}
+		for _, xmlDump := range fileScanner.DumpXmls {
+			// TODO: parse xml dump
+			fmt.Println(xmlDump)
+		}
+		for _, isoDump := range fileScanner.DumpIsos {
+			// TODO: parse iso dump
+			fmt.Println(isoDump)
+		}
+		for _, tlvBufferDump := range fileScanner.DumpTlvBuffers {
+			// TODO: parse tlv buffer dump
+			fmt.Println(tlvBufferDump)
 		}
 	}
 

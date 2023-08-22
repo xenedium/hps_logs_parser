@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/xenedium/hps_logs_parser/iso8583/parser"
 	"os"
+	"path"
 
-	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
 	"github.com/xenedium/hps_logs_parser/iso8583/types"
 )
 
@@ -60,20 +61,36 @@ func typest() {
 }
 
 func main() {
-	f, err := os.Open("logs/POSTILION.TRC000")
+
+	var logDir = "logs"
+
+	files, err := os.ReadDir(logDir)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	defer f.Close()
 
-	fScanner := scanner.Scanner{
-		File: f,
+	var filesToParse []*os.File
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+		f, err := os.Open(path.Join(logDir, file.Name()))
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+		filesToParse = append(filesToParse, f)
 	}
 
-	fScanner.Scan()
+	logParser := parser.Parser{
+		Files: filesToParse,
+	}
 
-	for _, dumpPostilion := range fScanner.DumpTlvBuffers {
-		fmt.Println(dumpPostilion)
+	messages := logParser.Parse()
+
+	for _, message := range messages {
+		fmt.Println(message)
 	}
 }
