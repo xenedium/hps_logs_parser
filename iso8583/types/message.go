@@ -3,7 +3,7 @@ package types
 type message struct {
 	MTI         mti
 	Bitmap      string
-	Fields      map[int]field
+	Fields      map[string]field
 	Raw         string
 	LogFileName string
 }
@@ -37,12 +37,12 @@ func (m *message) IsResponse() bool {
 	return m.MTI.isResponse()
 }
 
-func (m *message) GetField(field int) (Field, bool) {
+func (m *message) GetField(field string) (Field, bool) {
 	f, ok := m.Fields[field]
 	return f, ok
 }
 
-func (m *message) SetField(field int, value string) *message {
+func (m *message) SetField(field string, value string) *message {
 	m.Fields[field] = Field{Length: len(value), Value: value, Raw: []byte(value)}
 	return m
 }
@@ -52,7 +52,7 @@ func (m *message) GetRaw() string {
 }
 
 func (m *message) GetResponseCodeMessage() (string, bool) {
-	f, ok := m.Fields[39]
+	f, ok := m.Fields["39"]
 	if !ok {
 		return "", false
 	}
