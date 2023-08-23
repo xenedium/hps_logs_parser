@@ -1,10 +1,11 @@
 package types
 
 type message struct {
-	MTI    mti
-	Bitmap string
-	Fields map[int]field
-	Raw    string
+	MTI         mti
+	Bitmap      string
+	Fields      map[int]field
+	Raw         string
+	LogFileName string
 }
 
 func (m *message) String() string {
