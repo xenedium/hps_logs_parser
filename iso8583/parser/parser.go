@@ -9,7 +9,7 @@ import (
 
 type parser struct {
 	scanners             []*scanner.Scanner
-	messages             []*types.Message
+	Messages             []*types.Message
 	Files                []*os.File
 	ParsedDumpPostilions []*types.Message
 	ParsedDumpXmls       []*types.Message
@@ -18,65 +18,48 @@ type parser struct {
 }
 
 func (p *parser) Parse() []*types.Message {
-	waitGroup := sync.WaitGroup{}
+	scanWaitGroup := sync.WaitGroup{}
 	for _, file := range p.Files {
-		waitGroup.Add(1)
+		scanWaitGroup.Add(1)
 		fileScanner := &scanner.Scanner{File: file}
 		go func() {
-			defer waitGroup.Done()
+			defer scanWaitGroup.Done()
 			fileScanner.Scan()
 		}()
 		p.scanners = append(p.scanners, fileScanner)
 	}
-	waitGroup.Wait()
-
-	// each scanner will have a separate go routine
-	// and each dump will have a separate go routine
-	// this will make the parsing faster by a factor of the number of files
+	scanWaitGroup.Wait()
 
 	for _, fileScanner := range p.scanners {
-		waitGroup.Add(1)
-		fileScanner := fileScanner
-		go func() {
-			defer waitGroup.Done()
-			for _, postilionDump := range fileScanner.DumpPostilions {
-				waitGroup.Add(1)
-				postilionDump := postilionDump
-				go func() {
-					defer waitGroup.Done()
-					p.parseDumpPostilion(postilionDump, fileScanner.File.Name())
-				}()
-			}
-			for _, xmlDump := range fileScanner.DumpXmls {
-				waitGroup.Add(1)
-				xmlDump := xmlDump
-				go func() {
-					defer waitGroup.Done()
-					p.parseDumpXml(xmlDump, fileScanner.File.Name())
-				}()
-			}
-			for _, isoDump := range fileScanner.DumpIsos {
-				waitGroup.Add(1)
-				isoDump := isoDump
-				go func() {
-					defer waitGroup.Done()
-					p.parseDumpIso(isoDump, fileScanner.File.Name())
-				}()
-			}
-			for _, tlvBufferDump := range fileScanner.DumpTlvBuffers {
-				waitGroup.Add(1)
-				tlvBufferDump := tlvBufferDump
-				go func() {
-					defer waitGroup.Done()
-					p.parseDumpTlvBuffer(tlvBufferDump, fileScanner.File.Name())
-				}()
-			}
-		}()
+		for _, postilionDump := range fileScanner.DumpPostilions {
+			p.parseDumpPostilion(&postilionDump, fileScanner.File.Name())
+		}
+		for _, xmlDump := range fileScanner.DumpXmls {
+			p.parseDumpXml(&xmlDump, fileScanner.File.Name())
+		}
+		for _, isoDump := range fileScanner.DumpIsos {
+			p.parseDumpIso(&isoDump, fileScanner.File.Name())
+		}
+		for _, tlvBufferDump := range fileScanner.DumpTlvBuffers {
+			p.parseDumpTlvBuffer(&tlvBufferDump, fileScanner.File.Name())
+		}
+
 	}
 
-	waitGroup.Wait()
+	for _, parsedMessage := range p.ParsedDumpPostilions {
+		p.Messages = append(p.Messages, parsedMessage)
+	}
+	for _, parsedMessage := range p.ParsedDumpXmls {
+		p.Messages = append(p.Messages, parsedMessage)
+	}
+	for _, parsedMessage := range p.ParsedDumpIsos {
+		p.Messages = append(p.Messages, parsedMessage)
+	}
+	for _, parsedMessage := range p.ParsedDumpTlvBuffers {
+		p.Messages = append(p.Messages, parsedMessage)
+	}
 
-	return p.messages
+	return p.Messages
 }
 
 type Parser = parser

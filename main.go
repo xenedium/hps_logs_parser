@@ -88,9 +88,9 @@ func main() {
 		Files: filesToParse,
 	}
 
-	messages := logParser.Parse()
+	logParser.Parse()
 
-	for _, message := range messages {
-		fmt.Println(message)
+	for _, message := range logParser.Messages {
+		fmt.Println(message.LogFileName)
 	}
 }
