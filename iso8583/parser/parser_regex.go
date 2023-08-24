@@ -13,3 +13,7 @@ var dumpXmlClosingMessageInfoTagRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ \
 var dumpXmlMultiLineFieldHeaderRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ \d+\|\w\|\s*<Field Number="(\d{3})" Value="(.*)\s*\.`)
 var dumpXmlMultiLineFieldRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ \d+\|\w\|\s* (.*)\s*\.`)
 var dumpXmlMultiLineFieldClosingTagRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ \d+\|\w\|\s*(.*)"/>\s*\.`)
+
+var dumpIsoBitMapRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ \d+\|\w\| - BIT MAP\s*:\s*(.*)\s*\.`)
+var dumpIsoMTIRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ \d+\|\w\| - M.T.I\s*:\s* \[?(\d*)]?\s*\.`)
+var dumpIsoFieldRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ \d+\|\w\| - FLD \((\d*)\)\s*:\s*\(\d*\)\s*:\s*\[(.*)\s*\.`)
