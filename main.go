@@ -37,7 +37,7 @@ func main() {
 
 	logParser.Parse()
 
-	for _, message := range logParser.ParsedDumpPostilions {
+	for _, message := range logParser.Messages {
 		if message.MTI.Class != 2 {
 			continue
 		}
