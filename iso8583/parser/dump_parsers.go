@@ -121,9 +121,9 @@ func (p *parser) parseDumpIso(dumpIso *string, fileName string) {
 }
 
 func (p *parser) parseDumpTlvBuffer(dumpTlvBuffer *string, fileName string) {
-	parsedMessage := &types.Message{
-		LogFileName: fileName,
-	}
+	// parsedMessage := &types.Message{
+	// 	 LogFileName: fileName,
+	// }
 
-	p.ParsedDumpTlvBuffers = append(p.ParsedDumpTlvBuffers, parsedMessage)
+	// p.ParsedDumpTlvBuffers = append(p.ParsedDumpTlvBuffers, parsedMessage)
 }
