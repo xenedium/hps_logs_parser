@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/xenedium/hps_logs_parser/iso8583/parser"
+	"github.com/xenedium/hps_logs_parser/iso8583/types"
 	"os"
 	"path"
 )
@@ -38,9 +39,14 @@ func main() {
 	logParser.Parse()
 
 	for _, message := range logParser.Messages {
-		if message.MTI.Class != 2 {
+		_, ok := message.Fields["039"]
+		if message.MTI.Class != 2 || !ok {
 			continue
 		}
-		fmt.Println(message.Fields["037"].Value)
+		fmt.Println("RNN:", message.Fields["037"].Value, "\nBITMAP: ", message.Bitmap, "\nRESPONSE CODE: ",
+			message.Fields["039"].Value, "\nMTI: ", message.MTI.String(), "\nFILENAME: ", message.LogFileName,
+			"\nRESPONSE MESSAGE: ", types.ResponseCodeMap[message.Fields["039"].Value],
+			"\nCard acceptor name/location: ", message.Fields["043"].Value,
+			"\n")
 	}
 }
