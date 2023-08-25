@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/xenedium/hps_logs_parser/server/handlers"
 )
 
 type Server struct {
@@ -27,8 +28,8 @@ func NewServer(Address string, ApiKey string) *Server {
 	// ROUTES
 	v1 := newServer.router.Group("/api/v1")
 	{
-		v1.POST("/upload", uploadFilesEndpoint())
-		v1.POST("/ssh")
+		v1.POST("/upload", handlers.UploadFilesEndpoint())
+		v1.POST("/ssh", handlers.SSHEndpoint())
 	}
 
 	// error 404

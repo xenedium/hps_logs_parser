@@ -1,4 +1,4 @@
-package server
+package handlers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-func uploadFilesEndpoint() gin.HandlerFunc {
+func UploadFilesEndpoint() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		form, err := c.MultipartForm()
 		if err != nil {
