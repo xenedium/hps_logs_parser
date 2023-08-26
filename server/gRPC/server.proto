@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "github.com/xenedium/hps_logs_parser/server/gRPC";
+
+service Parser {
+  rpc SSHParse(SSHRequest) returns (Response){}
+}
+
+message SSHRequest {
+  string host                 = 1;
+  string port                 = 2;
+  string user                 = 3;
+  string absoluteDir          = 4;
+  optional string password    = 5;
+  optional string privateKey  = 6;
+  optional string passphrase  = 7;
+}
+
+message Response {
+  string requestId = 1;
+}

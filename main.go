@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	server.NewServer(":8080", "123").Run()
+	server.NewGRPCServer(":8080", "123")
 }
 
 /*

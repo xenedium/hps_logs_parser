@@ -1,8 +1,13 @@
 package server
 
 import (
+	"flag"
+	"log"
+	"net"
+
 	"github.com/gin-gonic/gin"
-	"github.com/xenedium/hps_logs_parser/server/handlers"
+	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
+	"google.golang.org/grpc"
 )
 
 type Server struct {
@@ -28,8 +33,8 @@ func NewServer(Address string, ApiKey string) *Server {
 	// ROUTES
 	v1 := newServer.router.Group("/api/v1")
 	{
-		v1.POST("/upload", handlers.UploadFilesEndpoint())
-		v1.POST("/ssh", handlers.SSHEndpoint())
+		v1.POST("/upload", UploadFilesEndpoint())
+		v1.POST("/ssh", SSHEndpoint())
 	}
 
 	// error 404
@@ -38,4 +43,25 @@ func NewServer(Address string, ApiKey string) *Server {
 	})
 
 	return newServer
+}
+
+type gRPCServer struct {
+	protocolBuffer.UnimplementedParserServer
+}
+
+func NewGRPCServer(Address string, ApiKey string) {
+	flag.Parse()
+	listener, err := net.Listen("tcp", Address)
+	if err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
+
+	grpcServer := grpc.NewServer()
+	protocolBuffer.RegisterParserServer(grpcServer, &gRPCServer{})
+
+	log.Printf("Server listening at %v", listener.Addr())
+
+	if err := grpcServer.Serve(listener); err != nil {
+		log.Fatalf("failed to server: %v", err)
+	}
 }
