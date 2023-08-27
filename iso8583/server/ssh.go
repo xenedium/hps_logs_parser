@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/melbahja/goph"
-	"github.com/xenedium/hps_logs_parser/parser"
+	"github.com/xenedium/iso8583parser/parser"
 	"golang.org/x/crypto/ssh"
 	"os"
 	"path"

@@ -1,4 +1,4 @@
-module github.com/xenedium/hps_logs_parser
+module github.com/xenedium/iso8583parser
 
 go 1.21.0
 

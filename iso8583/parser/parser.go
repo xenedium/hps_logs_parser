@@ -2,12 +2,12 @@ package parser
 
 import (
 	"fmt"
-	"github.com/xenedium/hps_logs_parser/scanner"
+	"github.com/xenedium/iso8583parser/scanner"
 	"os"
 	"path"
 	"sync"
 
-	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
+	protocolBuffer "github.com/xenedium/iso8583parser/server/gRPC"
 )
 
 type parser struct {

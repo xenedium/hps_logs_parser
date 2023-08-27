@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 	"errors"
-	"github.com/xenedium/hps_logs_parser/parser"
-	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
+	"github.com/xenedium/iso8583parser/parser"
+	protocolBuffer "github.com/xenedium/iso8583parser/server/gRPC"
 	"log"
 	"os"
 	"path"

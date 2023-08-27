@@ -2,7 +2,7 @@ package server
 
 import (
 	"flag"
-	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
+	protocolBuffer "github.com/xenedium/iso8583parser/server/gRPC"
 	"log"
 	"net"
 
