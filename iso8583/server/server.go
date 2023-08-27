@@ -2,11 +2,11 @@ package server
 
 import (
 	"flag"
+	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
 	"log"
 	"net"
 
 	"github.com/gin-gonic/gin"
-	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
 	"google.golang.org/grpc"
 )
 

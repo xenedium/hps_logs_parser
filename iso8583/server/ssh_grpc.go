@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/melbahja/goph"
-	"github.com/xenedium/hps_logs_parser/iso8583/parser"
+	"github.com/xenedium/hps_logs_parser/parser"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
 	"golang.org/x/crypto/ssh"
 	"log"

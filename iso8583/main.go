@@ -1,6 +1,8 @@
 package main
 
-import "github.com/xenedium/hps_logs_parser/server"
+import (
+	"github.com/xenedium/hps_logs_parser/server"
+)
 
 func main() {
 	server.NewGRPCServer(":8080")

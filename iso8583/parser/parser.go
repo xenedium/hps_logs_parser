@@ -2,7 +2,7 @@ package parser
 
 import (
 	"fmt"
-	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
+	"github.com/xenedium/hps_logs_parser/scanner"
 	"os"
 	"path"
 	"sync"

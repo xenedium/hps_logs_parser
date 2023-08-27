@@ -3,12 +3,11 @@ package server
 import (
 	"context"
 	"errors"
-	"github.com/xenedium/hps_logs_parser/iso8583/parser"
+	"github.com/xenedium/hps_logs_parser/parser"
+	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
 	"log"
 	"os"
 	"path"
-
-	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
 )
 
 func (s *gRPCServer) FilesParse(ctx context.Context, req *protocolBuffer.FilesRequest) (*protocolBuffer.Response, error) {
