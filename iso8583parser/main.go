@@ -2,10 +2,17 @@ package main
 
 import (
 	"github.com/xenedium/iso8583parser/server"
+	"log"
 	"os"
 )
 
 func main() {
+	if os.Getenv("GRPC_ADDRESS") == "" {
+		err := os.Setenv("GRPC_ADDRESS", ":8080")
+		if err != nil {
+			log.Fatalf("Error setting GRPC_ADDRESS environment variable: %v", err)
+		}
+	}
 	server.NewGRPCServer(os.Getenv("GRPC_ADDRESS"))
 }
 
