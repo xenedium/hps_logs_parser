@@ -1,7 +1,7 @@
 package types
 
 type field struct {
-	Length int
+	Length int64
 	Value  string
 	Raw    []byte
 }

@@ -8,7 +8,7 @@ service Parser {
 
 message SSHRequest {
   string host                 = 1;
-  string port                 = 2;
+  uint64 port                 = 2;
   string user                 = 3;
   string absoluteDir          = 4;
   optional string password    = 5;
@@ -17,5 +17,27 @@ message SSHRequest {
 }
 
 message Response {
-  string requestId = 1;
+  repeated Message messages   = 1;
+}
+
+message MTI {
+  uint32 version    = 1;
+  uint32 class      = 2;
+  uint32 function   = 3;
+  uint32 origin     = 4;
+}
+
+message Field {
+  int64 length        = 1;
+  string value        = 2;
+  string raw          = 3;
+}
+
+message Message {
+  MTI mti                   = 1;
+  string bitmap             = 2;
+  string raw                = 3;
+  string logFileName        = 4;
+  string lineNumber         = 5;
+  map<string, Field> fields = 6;
 }

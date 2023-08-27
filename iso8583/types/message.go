@@ -43,7 +43,7 @@ func (m *message) GetField(field string) (Field, bool) {
 }
 
 func (m *message) SetField(field string, value string) *message {
-	m.Fields[field] = Field{Length: len(value), Value: value, Raw: []byte(value)}
+	m.Fields[field] = Field{Length: int64(len(value)), Value: value, Raw: []byte(value)}
 	return m
 }
 

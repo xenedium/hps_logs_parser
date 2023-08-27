@@ -3,20 +3,21 @@ package parser
 import (
 	"fmt"
 	"github.com/xenedium/hps_logs_parser/iso8583/scanner"
-	"github.com/xenedium/hps_logs_parser/iso8583/types"
 	"os"
 	"path"
 	"sync"
+
+	protocolBuffer "github.com/xenedium/hps_logs_parser/server/gRPC"
 )
 
 type parser struct {
 	scanners             []*scanner.Scanner
-	Messages             []*types.Message
+	Messages             []*protocolBuffer.Message
 	Files                []*os.File
-	ParsedDumpPostilions []*types.Message
-	ParsedDumpXmls       []*types.Message
-	ParsedDumpIsos       []*types.Message
-	ParsedDumpTlvBuffers []*types.Message
+	ParsedDumpPostilions []*protocolBuffer.Message
+	ParsedDumpXmls       []*protocolBuffer.Message
+	ParsedDumpIsos       []*protocolBuffer.Message
+	ParsedDumpTlvBuffers []*protocolBuffer.Message
 }
 
 func NewParser(logDir string) *Parser {
@@ -45,7 +46,7 @@ func NewParser(logDir string) *Parser {
 	}
 }
 
-func (p *parser) Parse() []*types.Message {
+func (p *parser) Parse() []*protocolBuffer.Message {
 	defer func() {
 		for _, file := range p.Files {
 			_ = file.Close()
@@ -64,17 +65,17 @@ func (p *parser) Parse() []*types.Message {
 	scanWaitGroup.Wait()
 
 	for _, fileScanner := range p.scanners {
-		for _, postilionDump := range fileScanner.DumpPostilions {
-			p.parseDumpPostilion(&postilionDump, fileScanner.File.Name())
+		for lineNumber, postilionDump := range fileScanner.DumpPostilions {
+			p.parseDumpPostilion(&postilionDump, fileScanner.File.Name(), lineNumber)
 		}
-		for _, xmlDump := range fileScanner.DumpXmls {
-			p.parseDumpXml(&xmlDump, fileScanner.File.Name())
+		for lineNumber, xmlDump := range fileScanner.DumpXmls {
+			p.parseDumpXml(&xmlDump, fileScanner.File.Name(), lineNumber)
 		}
-		for _, isoDump := range fileScanner.DumpIsos {
-			p.parseDumpIso(&isoDump, fileScanner.File.Name())
+		for lineNumber, isoDump := range fileScanner.DumpIsos {
+			p.parseDumpIso(&isoDump, fileScanner.File.Name(), lineNumber)
 		}
-		for _, tlvBufferDump := range fileScanner.DumpTlvBuffers {
-			p.parseDumpTlvBuffer(&tlvBufferDump, fileScanner.File.Name())
+		for lineNumber, tlvBufferDump := range fileScanner.DumpTlvBuffers {
+			p.parseDumpTlvBuffer(&tlvBufferDump, fileScanner.File.Name(), lineNumber)
 		}
 
 	}

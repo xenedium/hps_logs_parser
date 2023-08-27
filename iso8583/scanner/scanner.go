@@ -10,15 +10,15 @@ import (
 type scanner struct {
 	File           *os.File
 	Fld37          []string
-	DumpPostilions []string
-	DumpXmls       []string
-	DumpIsos       []string
-	DumpTlvBuffers []string
+	DumpPostilions map[int]string
+	DumpXmls       map[int]string
+	DumpIsos       map[int]string
+	DumpTlvBuffers map[int]string
 }
 type matcherHandlerArray struct {
 	Matcher *regexp.Regexp
-	Handler func(*bufio.Scanner) string
-	Array   *[]string
+	Handler func(*bufio.Scanner, *int) string
+	Array   *map[int]string
 }
 
 func (s *scanner) Scan() {
@@ -54,10 +54,17 @@ func (s *scanner) Scan() {
 		},
 	}
 
+	s.DumpIsos = make(map[int]string)
+	s.DumpPostilions = make(map[int]string)
+	s.DumpTlvBuffers = make(map[int]string)
+	s.DumpXmls = make(map[int]string)
+
+	lineNumber := 0
 	for scanner.Scan() {
+		lineNumber++
 		for _, mha := range mhaArray {
 			if mha.Matcher.MatchString(scanner.Text()) {
-				*mha.Array = append(*mha.Array, mha.Handler(scanner))
+				(*mha.Array)[lineNumber] = mha.Handler(scanner, &lineNumber)
 			}
 		}
 	}

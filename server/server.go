@@ -10,21 +10,21 @@ import (
 	"google.golang.org/grpc"
 )
 
-type Server struct {
+type RestServer struct {
 	address string
 	router  *gin.Engine
 	apiKey  string
 }
 
-func (s *Server) Run() {
+func (s *RestServer) Run() {
 	err := s.router.Run(s.address)
 	if err != nil {
 		return
 	}
 }
 
-func NewServer(Address string, ApiKey string) *Server {
-	newServer := &Server{address: Address, router: gin.Default(), apiKey: ApiKey}
+func NewRestServer(Address string, ApiKey string) *RestServer {
+	newServer := &RestServer{address: Address, router: gin.Default(), apiKey: ApiKey}
 
 	// MIDDLEWARES
 	newServer.router.Use(gin.Recovery())
@@ -49,7 +49,7 @@ type gRPCServer struct {
 	protocolBuffer.UnimplementedParserServer
 }
 
-func NewGRPCServer(Address string, ApiKey string) {
+func NewGRPCServer(Address string) {
 	flag.Parse()
 	listener, err := net.Listen("tcp", Address)
 	if err != nil {

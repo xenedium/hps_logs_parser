@@ -1,10 +1,12 @@
 package types
 
+import "fmt"
+
 type mti struct {
-	Version  uint8
-	Class    uint8
-	Function uint8
-	Origin   uint8
+	Version  uint32
+	Class    uint32
+	Function uint32
+	Origin   uint32
 }
 
 var MessageOriginMap = map[int]string{
@@ -41,19 +43,15 @@ var MessageClassMap = map[int]string{
 }
 
 func (mti *mti) String() string {
-	return string([]byte{mti.Version + '0', mti.Class + '0', mti.Function + '0', mti.Origin + '0'})
+	return fmt.Sprintf("%d%d%d%d", mti.Version, mti.Class, mti.Function, mti.Origin)
 }
 
 func (m *mti) setMTI(mti string) *mti {
-	m.Version = mti[0] - '0'
-	m.Class = mti[1] - '0'
-	m.Function = mti[2] - '0'
-	m.Origin = mti[3] - '0'
+	m.Version = uint32(mti[0] - '0')
+	m.Class = uint32(mti[1] - '0')
+	m.Function = uint32(mti[2] - '0')
+	m.Origin = uint32(mti[3] - '0')
 	return m
-}
-
-func (m *mti) getMTIBytes() []byte {
-	return []byte{m.Version + '0', m.Class + '0', m.Function + '0', m.Origin + '0'}
 }
 
 func (m *mti) getMTIClassName() string {
