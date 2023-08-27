@@ -83,7 +83,7 @@ func SSHEndpoint() gin.HandlerFunc {
 		}
 
 		logParser := parser.NewParser(tempDir)
-		logParser.Parse()
+		logParser.Parse(true)
 
 		c.JSON(200, gin.H{"messages": logParser.Messages})
 	}

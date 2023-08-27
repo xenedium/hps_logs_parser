@@ -64,10 +64,9 @@ func (s *gRPCServer) SSHParse(ctx context.Context, incomingData *protocolBuffer.
 
 	log.Printf("Parsing files from %v\n", incomingData.AbsoluteDir)
 	logParser := parser.NewParser(tempDir)
-	logParser.Parse()
+	logParser.Parse(true)
 
 	log.Printf("Returning response")
-
 	return &protocolBuffer.Response{
 		Messages: logParser.Messages,
 	}, nil

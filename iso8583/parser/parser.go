@@ -46,7 +46,7 @@ func NewParser(logDir string) *Parser {
 	}
 }
 
-func (p *parser) Parse() []*protocolBuffer.Message {
+func (p *parser) Parse(ignorePing bool) []*protocolBuffer.Message {
 	defer func() {
 		for _, file := range p.Files {
 			_ = file.Close()
@@ -81,15 +81,27 @@ func (p *parser) Parse() []*protocolBuffer.Message {
 	}
 
 	for _, parsedMessage := range p.ParsedDumpPostilions {
+		if ignorePing && parsedMessage.Mti.Class == 8 {
+			continue
+		}
 		p.Messages = append(p.Messages, parsedMessage)
 	}
 	for _, parsedMessage := range p.ParsedDumpXmls {
+		if ignorePing && parsedMessage.Mti.Class == 8 {
+			continue
+		}
 		p.Messages = append(p.Messages, parsedMessage)
 	}
 	for _, parsedMessage := range p.ParsedDumpIsos {
+		if ignorePing && parsedMessage.Mti.Class == 8 {
+			continue
+		}
 		p.Messages = append(p.Messages, parsedMessage)
 	}
 	for _, parsedMessage := range p.ParsedDumpTlvBuffers {
+		if ignorePing && parsedMessage.Mti.Class == 8 {
+			continue
+		}
 		p.Messages = append(p.Messages, parsedMessage)
 	}
 
