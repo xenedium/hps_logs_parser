@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ParserClient interface {
 	SSHParse(ctx context.Context, in *SSHRequest, opts ...grpc.CallOption) (*Response, error)
+	FilesParse(ctx context.Context, in *FilesRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type parserClient struct {
@@ -42,11 +43,21 @@ func (c *parserClient) SSHParse(ctx context.Context, in *SSHRequest, opts ...grp
 	return out, nil
 }
 
+func (c *parserClient) FilesParse(ctx context.Context, in *FilesRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/Parser/FilesParse", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ParserServer is the server API for Parser service.
 // All implementations must embed UnimplementedParserServer
 // for forward compatibility
 type ParserServer interface {
 	SSHParse(context.Context, *SSHRequest) (*Response, error)
+	FilesParse(context.Context, *FilesRequest) (*Response, error)
 	mustEmbedUnimplementedParserServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedParserServer struct {
 
 func (UnimplementedParserServer) SSHParse(context.Context, *SSHRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SSHParse not implemented")
+}
+func (UnimplementedParserServer) FilesParse(context.Context, *FilesRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FilesParse not implemented")
 }
 func (UnimplementedParserServer) mustEmbedUnimplementedParserServer() {}
 
@@ -88,6 +102,24 @@ func _Parser_SSHParse_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Parser_FilesParse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParserServer).FilesParse(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Parser/FilesParse",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParserServer).FilesParse(ctx, req.(*FilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Parser_ServiceDesc is the grpc.ServiceDesc for Parser service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var Parser_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SSHParse",
 			Handler:    _Parser_SSHParse_Handler,
+		},
+		{
+			MethodName: "FilesParse",
+			Handler:    _Parser_FilesParse_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

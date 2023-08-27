@@ -56,7 +56,10 @@ func NewGRPCServer(Address string) {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.MaxRecvMsgSize(1024*1024*1024),
+		grpc.MaxSendMsgSize(1024*1024*1024),
+	)
 	protocolBuffer.RegisterParserServer(grpcServer, &gRPCServer{})
 
 	log.Printf("Server listening at %v", listener.Addr())

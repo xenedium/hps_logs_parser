@@ -4,6 +4,7 @@ option go_package = "github.com/xenedium/hps_logs_parser/server/gRPC";
 
 service Parser {
   rpc SSHParse(SSHRequest) returns (Response){}
+  rpc FilesParse(FilesRequest) returns (Response){}
 }
 
 message SSHRequest {
@@ -16,21 +17,30 @@ message SSHRequest {
   optional string passphrase  = 7;
 }
 
+message FilesRequest {
+  repeated File files = 1;
+}
+
+message File {
+  string name     = 1;
+  string content  = 2;
+}
+
 message Response {
-  repeated Message messages   = 1;
+  repeated Message messages = 1;
 }
 
 message MTI {
-  uint32 version    = 1;
-  uint32 class      = 2;
-  uint32 function   = 3;
-  uint32 origin     = 4;
+  uint32 version  = 1;
+  uint32 class    = 2;
+  uint32 function = 3;
+  uint32 origin   = 4;
 }
 
 message Field {
-  int64 length        = 1;
-  string value        = 2;
-  string raw          = 3;
+  int64 length  = 1;
+  string value  = 2;
+  string raw    = 3;
 }
 
 message Message {
