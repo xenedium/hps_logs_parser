@@ -46,7 +46,7 @@ jobs:
 
       - name: Install Deps, run lint and test build
         run: |
-          cd frontend
+          cd iso8583frontend
           yarn install --frozen-lockfile
           yarn lint
           yarn build
