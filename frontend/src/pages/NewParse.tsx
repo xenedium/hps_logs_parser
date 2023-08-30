@@ -2,8 +2,8 @@ import {Button, Container, Divider, SimpleGrid, TextInput, Title} from '@mantine
 import {FloatingLabelInput} from '../components/FloatingLabelInput.tsx';
 import {useState} from 'react';
 import {GradientSegmentedControl} from '../components/GradientSegmentedControl.tsx';
-import {DropzoneButton} from "../components/DropzoneButton.tsx";
-import {FileWithPath} from "@mantine/dropzone";
+import {DropzoneButton} from '../components/DropzoneButton.tsx';
+import {FileWithPath} from '@mantine/dropzone';
 
 export default function NewParse() {
 
