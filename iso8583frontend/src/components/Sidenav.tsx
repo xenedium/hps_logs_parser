@@ -14,8 +14,8 @@ import {IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
 
 type SidenavProps = {
     parses: { id: number, name: string, date: Date }[]
-    selection: number
-    setSelection: (id: number) => void
+    selection: number | 'new-parse'
+    setSelection: (id: number | 'new-parse') => void
 }
 
 const useStyles = createStyles((theme) => ({
@@ -60,11 +60,6 @@ export function Sidenav({parses, selection, setSelection}: SidenavProps) {
         alert(`Deleting parse request ${id}`)
     }
 
-    const HandleNew = () => {
-        // TODO: Implement new parse request
-        alert('Creating new parse request')
-    }
-
     return (
         <Navbar width={{base: 300}} p="md">
             <Navbar.Section>
@@ -73,7 +68,7 @@ export function Sidenav({parses, selection, setSelection}: SidenavProps) {
                     radius="xl"
                     fullWidth
                     rightIcon={<IconPlus size={18}/>}
-                    onClick={HandleNew}
+                    onClick={() => setSelection('new-parse')}
                 >
                     New Parse
                 </Button>
