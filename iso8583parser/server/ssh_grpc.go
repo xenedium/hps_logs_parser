@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"time"
 )
 
 func (s *gRPCServer) SSHParse(ctx context.Context, incomingData *protocolBuffer.SSHRequest) (*protocolBuffer.Response, error) {
@@ -80,7 +81,7 @@ func GetSSHClientFromGRPC(data *protocolBuffer.SSHRequest) (*goph.Client, error)
 			Addr:     data.Host,
 			Port:     uint(data.Port),
 			Auth:     goph.Password(*data.Password),
-			Timeout:  goph.DefaultTimeout,
+			Timeout:  time.Second * 5,
 			Callback: ssh.InsecureIgnoreHostKey(),
 		})
 	} else if *data.PrivateKey != "" {
@@ -101,7 +102,7 @@ func GetSSHClientFromGRPC(data *protocolBuffer.SSHRequest) (*goph.Client, error)
 			Addr:     data.Host,
 			Port:     uint(data.Port),
 			Auth:     auth,
-			Timeout:  goph.DefaultTimeout,
+			Timeout:  time.Second * 5,
 			Callback: ssh.InsecureIgnoreHostKey(),
 		})
 	} else {
