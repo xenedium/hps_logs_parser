@@ -1,17 +1,20 @@
 import {
+    ActionIcon,
+    Button, Center,
     Container,
-    createStyles,
+    createStyles, Flex,
     Group,
     LoadingOverlay,
     MultiSelect,
     ScrollArea,
+    Table,
     Tabs,
     TextInput,
     Title
 } from '@mantine/core';
 import type {IParseResult, Search} from '../types.ts';
 import {useEffect, useState} from 'react';
-import {IconMessageCircle, IconSearch} from '@tabler/icons-react';
+import {IconMessageCircle, IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
 import {useHotkeys} from '@mantine/hooks';
 
 
@@ -38,6 +41,7 @@ export default function ParseResult({id}: ParseResultProps) {
     const {classes} = useStyles()
     const [parse, setParse] = useState<IParseResult>()
     const [selectedTab, setSelectedTab] = useState<string | null>('search')
+    const [newFieldKey, setNewFieldKey] = useState<string>('')
 
     useHotkeys([['ctrl+k', () => setSelectedTab(selectedTab === 'search' ? 'results' : 'search')]])
 
@@ -211,8 +215,16 @@ export default function ParseResult({id}: ParseResultProps) {
         })
     }, [id])
 
-    const [search, setSearch] = useState<Search>({})
+    const [search, setSearch] = useState<Search>({
+        fields: {
+            '037': '',
+        }
+    })
 
+    const HandleSearch = () => {
+        // TODO: send search request
+        console.log(search)
+    }
 
     return (
         <>
@@ -289,16 +301,97 @@ export default function ParseResult({id}: ParseResultProps) {
                                         </Group>
                                     </Container>
                                     <Container>
-                                        <Title order={2} my="md">Fields</Title>
-                                        {/* TODO: make a table with fields */}
+                                        <Flex justify="space-between" align="center">
+                                            <Title order={2} my="md">Fields</Title>
+                                            <Flex gap="xs">
+                                                <TextInput
+                                                    placeholder="Field num"
+                                                    value={newFieldKey}
+                                                    onChange={(event) => setNewFieldKey(event.currentTarget.value)}
+                                                />
+                                                <Button
+                                                    variant="light"
+                                                    rightIcon={<IconPlus />}
+                                                    onClick={() => {
+                                                        if (newFieldKey === '') return
+                                                        setSearch({
+                                                            ...search,
+                                                            fields: {
+                                                                ...search.fields,
+                                                                [newFieldKey]: ''
+                                                            }
+                                                        })
+                                                        setNewFieldKey('')
+                                                    }}
+                                                >
+                                                    Add
+                                                </Button>
+                                            </Flex>
+                                        </Flex>
+                                        <Table
+                                            highlightOnHover
+                                            striped
+                                        >
+                                            <thead>
+                                                <tr>
+                                                    <th>Field Num</th>
+                                                    <th>Field value</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    Object.entries(search.fields as { [key: string]: string }).map(([key, value]) => (
+                                                        <tr key={key}>
+                                                            <td>{key}</td>
+                                                            <td>
+                                                                <TextInput
+                                                                    placeholder="Field value"
+                                                                    value={value}
+                                                                    onChange={(event) =>
+                                                                        setSearch({
+                                                                            ...search,
+                                                                            fields: {
+                                                                                ...search.fields,
+                                                                                [key]: event.currentTarget.value
+                                                                            }
+                                                                        })}
+                                                                />
+                                                            </td>
+                                                            <td
+                                                                onClick={() => setSearch({
+                                                                    ...search,
+                                                                    fields: Object.fromEntries(
+                                                                        Object.entries(search.fields as { [key: string]: string }).filter(([k]) => k !== key)
+                                                                    )
+                                                                })
+                                                                }
+                                                            >
+                                                                <ActionIcon>
+                                                                    <IconTrash />
+                                                                </ActionIcon>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </Table>
+                                        <Center>
+                                            <Button
+                                                mt="xl"
+                                                variant="light"
+                                                rightIcon={<IconSearch />}
+                                                onClick={HandleSearch}
+                                            >
+                                                Search
+                                            </Button>
+                                        </Center>
                                     </Container>
                                 </ScrollArea>
                             </Tabs.Panel>
-
                             <Tabs.Panel value="results" pt="xs">
                                 Messages tab content
                             </Tabs.Panel>
-
                         </Tabs>
                     </>
                     : <LoadingOverlay visible/>
