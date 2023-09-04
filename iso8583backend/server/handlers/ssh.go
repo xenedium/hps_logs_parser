@@ -6,6 +6,7 @@ import (
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"os"
 	"time"
 )
 
@@ -33,7 +34,7 @@ func SSHEndpoint() gin.HandlerFunc {
 			return
 		}
 
-		conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(os.Getenv("GRPC_ADDRESS"), grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
 			return
