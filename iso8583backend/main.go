@@ -14,5 +14,12 @@ func main() {
 		}
 	}
 
+	if os.Getenv("GRPC_ADDRESS") == "" {
+		err := os.Setenv("GRPC_ADDRESS", "127.0.0.1:8080")
+		if err != nil {
+			log.Fatalf("Error setting GRPC_ADDRESS environment variable: %v", err)
+		}
+	}
+
 	server.NewServer(os.Getenv("BACKEND_ADDRESS")).Run()
 }

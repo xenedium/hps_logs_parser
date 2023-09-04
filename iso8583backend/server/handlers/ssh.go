@@ -7,17 +7,17 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"os"
-	"time"
 )
 
 type SSHEndpointIncomingData struct {
-	Host        string `json:"host"`
-	Port        uint   `json:"port"`
-	User        string `json:"user"`
-	Password    string `json:"password"`
-	PrivateKey  string `json:"private_key"`
-	Passphrase  string `json:"passphrase"`
-	AbsoluteDir string `json:"absoluteDir"`
+	Host             string `json:"host"`
+	Port             uint   `json:"port"`
+	User             string `json:"user"`
+	Password         string `json:"password"`
+	PrivateKey       string `json:"private_key"`
+	Passphrase       string `json:"passphrase"`
+	AbsoluteDir      string `json:"absoluteDir"`
+	ParseRequestName string `json:"parseRequestName"`
 }
 
 func SSHEndpoint() gin.HandlerFunc {
@@ -29,7 +29,7 @@ func SSHEndpoint() gin.HandlerFunc {
 			return
 		}
 
-		if incomingData.Host == "" || incomingData.User == "" || incomingData.AbsoluteDir == "" {
+		if incomingData.Host == "" || incomingData.User == "" || incomingData.AbsoluteDir == "" || incomingData.ParseRequestName == "" {
 			c.AbortWithStatusJSON(400, gin.H{"error": "missing required fields"})
 			return
 		}
@@ -42,7 +42,8 @@ func SSHEndpoint() gin.HandlerFunc {
 		defer conn.Close()
 
 		client := protocolBuffer.NewParserClient(conn)
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		ctx, cancel := context.WithCancel(context.Background())
+
 		defer cancel()
 
 		reply, err := client.SSHParse(ctx, &protocolBuffer.SSHRequest{

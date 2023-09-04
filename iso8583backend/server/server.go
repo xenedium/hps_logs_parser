@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/xenedium/hps_logs_parser/iso8583backend/server/handlers"
+	"github.com/xenedium/hps_logs_parser/iso8583backend/server/middlewares"
 )
 
 type Server struct {
@@ -22,6 +23,7 @@ func NewServer(Address string) *Server {
 
 	// MIDDLEWARES
 	newServer.router.Use(gin.Recovery())
+	newServer.router.Use(middlewares.CORSMiddleware())
 
 	// ROUTES
 	v1 := newServer.router.Group("/api/v1")
