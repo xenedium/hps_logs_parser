@@ -1,4 +1,4 @@
-local host = std.extVar("host")
+local host = std.extVar("host");
 
 [
   {
