@@ -1,9 +1,10 @@
 import {
+    Accordion,
     ActionIcon,
     Button, Center,
     Container,
     createStyles, Flex,
-    Group,
+    Group, JsonInput,
     LoadingOverlay,
     MultiSelect,
     ScrollArea,
@@ -16,6 +17,7 @@ import type {IParseResult, Search} from '../types.ts';
 import {useEffect, useState} from 'react';
 import {IconMessageCircle, IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
 import {useHotkeys} from '@mantine/hooks';
+import {GetResponseMessage} from "../types.ts";
 
 
 const useStyles = createStyles((theme) => ({
@@ -224,6 +226,7 @@ export default function ParseResult({id}: ParseResultProps) {
     const HandleSearch = () => {
         // TODO: send search request
         console.log(search)
+        setSelectedTab('results')
     }
 
     return (
@@ -390,7 +393,25 @@ export default function ParseResult({id}: ParseResultProps) {
                                 </ScrollArea>
                             </Tabs.Panel>
                             <Tabs.Panel value="results" pt="xs">
-                                Messages tab content
+                                    <Accordion variant="separated">
+                                        {
+                                            parse.messages.map((message, index) => (
+                                                <Accordion.Item value={message.fields["037"].value} key={index}>
+                                                    <Accordion.Control>
+                                                        037: {message.fields["037"].value} <br/>
+                                                        MTI: {message.mti.version}{message.mti.class}{message.mti.function}{message.mti.origin} <br/>
+                                                        Response: {message.fields["039"].value} ({GetResponseMessage(message.fields["039"].value)}) <br/>
+                                                    </Accordion.Control>
+                                                    <Accordion.Panel>
+                                                        <JsonInput
+                                                            value={JSON.stringify(message, null, 2)}
+                                                            autosize
+                                                        />
+                                                    </Accordion.Panel>
+                                                </Accordion.Item>
+                                            ))
+                                        }
+                                    </Accordion>
                             </Tabs.Panel>
                         </Tabs>
                     </>
