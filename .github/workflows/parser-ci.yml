@@ -17,8 +17,8 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  PARSER_IMAGE_NAME: xenedium/iso8583parser
-  PARSER_CONTEXT: iso8583parser
+  IMAGE_NAME: xenedium/iso8583parser
+  CONTEXT: iso8583parser
 
 
 jobs:
@@ -56,8 +56,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: ${{ env.PARSER_CONTEXT }}
+          context: ${{ env.CONTEXT }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.PARSER_IMAGE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
