@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/xenedium/iso8583parser/parser"
+	"github.com/xenedium/hps_logs_parser/iso8583parser/parser"
 	"os"
 	"path"
 )

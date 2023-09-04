@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	protocolBuffer "github.com/xenedium/iso8583parser/server/gRPC"
+	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
 )
 
 func (p *parser) parseDumpPostilion(dumpPostilion *string, fileName string, lineNumber int) {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/xenedium/iso8583parser/server"
+	"github.com/xenedium/hps_logs_parser/iso8583parser/server"
 	"log"
 	"os"
 )
