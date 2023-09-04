@@ -1,4 +1,4 @@
-import {Button, Container, Divider, SimpleGrid, TextInput, Title} from '@mantine/core';
+import {Button, Container, Divider, Flex, Loader, Modal, SimpleGrid, Text, TextInput, Title} from '@mantine/core';
 import {FloatingLabelInput} from '../components/FloatingLabelInput.tsx';
 import {useState} from 'react';
 import {GradientSegmentedControl} from '../components/GradientSegmentedControl.tsx';
@@ -7,10 +7,47 @@ import {FileWithPath} from '@mantine/dropzone';
 
 export default function NewParse() {
 
-    const HandleCreateParse = () => {
-        // TODO: Create parse request
-        alert('Creating parse')
+    const HandleCreateParse = async () => {
+        setLoading(true)
+        if (newParse.type === 'ssh') {
+            const response = await fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/ssh`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    host: newParse.ssh.host,
+                    port: newParse.ssh.port,
+                    user: newParse.ssh.username,
+                    password: newParse.ssh.password,
+                    absoluteDir: newParse.ssh.path,
+                    parseRequestName: newParse.name,
+                })
+            })
+            const data = await response.json()
+            setLoading(false)
+            if (data.error) return alert(data.error)
+            alert('Parse request created successfully')
+            window.location.reload()
+        }
+        if (newParse.type === 'upload') {
+            const formData = new FormData()
+            newParse.upload.files.forEach((file) => formData.append('files', file))
+            formData.append('parseRequestName', newParse.name)
+
+            const response = await fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/upload`, {
+                method: 'POST',
+                body: formData
+            })
+
+            const data = await response.json()
+            setLoading(false)
+            if (data.error) return alert(data.error)
+            alert('Parse request created successfully')
+            window.location.reload()
+        }
     }
+
 
     const [newParse, setNewParse] = useState<{
         name: string
@@ -41,8 +78,19 @@ export default function NewParse() {
         }
     })
 
+    const [loading, setLoading] = useState<boolean>(false)
+
     return (
         <div>
+            <Modal centered opened={loading} onClose={() => setLoading(false)} withCloseButton={false}>
+                <Flex align="center" gap="xl">
+                    <Loader size="xl"/>
+                    <div>
+                        <Text>Creating parse request...</Text>
+                        <Text c="dimmed">This can take seconds up to minutes...</Text>
+                    </div>
+                </Flex>
+            </Modal>
             <Title p="md">New Parse Request</Title>
             <Container p="md">
                 <Container>
