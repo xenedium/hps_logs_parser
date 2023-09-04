@@ -18,7 +18,7 @@ spec:
       containers:
         - name: iso8583backend
           image: xenedium/iso8583backend:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           env:

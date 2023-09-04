@@ -18,7 +18,7 @@ spec:
       containers:
         - name: iso8583parser
           image: xenedium/iso8583parser:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
       restartPolicy: Always
