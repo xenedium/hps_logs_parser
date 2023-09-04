@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iso8583parser
+  labels:
+    app: iso8583parser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iso8583parser
+  template:
+    metadata:
+      name: iso8583parser
+      labels:
+        app: iso8583parser
+    spec:
+      containers:
+        - name: iso8583parser
+          image: xenedium/iso8583parser:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+      

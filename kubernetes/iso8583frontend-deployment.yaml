@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iso8583frontend
+  labels:
+    app: iso8583frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iso8583frontend
+  template:
+    metadata:
+      name: iso8583frontend
+      labels:
+        app: iso8583frontend
+    spec:
+      containers:
+        - name: iso8583frontend
+          image: xenedium/iso8583frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+      restartPolicy: Always
+      
