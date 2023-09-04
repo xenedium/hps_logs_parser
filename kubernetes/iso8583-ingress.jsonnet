@@ -1,3 +1,5 @@
+local host = std.extVar("host")
+
 [
   {
     apiVersion: 'networking.k8s.io/v1',
