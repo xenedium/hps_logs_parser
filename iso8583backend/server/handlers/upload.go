@@ -18,10 +18,16 @@ func UploadFilesEndpoint() gin.HandlerFunc {
 			return
 		}
 
+		parseRequestName := form.Value["parseRequestName"]
 		files := form.File["files"]
 
 		if len(files) == 0 {
 			c.AbortWithStatusJSON(400, gin.H{"error": "no files uploaded"})
+			return
+		}
+
+		if len(parseRequestName) == 0 {
+			c.AbortWithStatusJSON(400, gin.H{"error": "missing required fields"})
 			return
 		}
 
