@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/xenedium/iso8583parser/server/gRPC";
+option go_package = "github.com/xenedium/hps_logs_parser/gRPC";
 
 service Parser {
   rpc SSHParse(SSHRequest) returns (Response){}
