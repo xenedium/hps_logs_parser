@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ParserClient interface {
 	SSHParse(ctx context.Context, in *SSHRequest, opts ...grpc.CallOption) (*Response, error)
 	FilesParse(ctx context.Context, in *FilesRequest, opts ...grpc.CallOption) (*Response, error)
+	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
 }
 
 type parserClient struct {
@@ -52,12 +53,22 @@ func (c *parserClient) FilesParse(ctx context.Context, in *FilesRequest, opts ..
 	return out, nil
 }
 
+func (c *parserClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
+	out := new(PingResponse)
+	err := c.cc.Invoke(ctx, "/Parser/Ping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ParserServer is the server API for Parser service.
 // All implementations must embed UnimplementedParserServer
 // for forward compatibility
 type ParserServer interface {
 	SSHParse(context.Context, *SSHRequest) (*Response, error)
 	FilesParse(context.Context, *FilesRequest) (*Response, error)
+	Ping(context.Context, *PingRequest) (*PingResponse, error)
 	mustEmbedUnimplementedParserServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedParserServer) SSHParse(context.Context, *SSHRequest) (*Respon
 }
 func (UnimplementedParserServer) FilesParse(context.Context, *FilesRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FilesParse not implemented")
+}
+func (UnimplementedParserServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 func (UnimplementedParserServer) mustEmbedUnimplementedParserServer() {}
 
@@ -120,6 +134,24 @@ func _Parser_FilesParse_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Parser_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ParserServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Parser/Ping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ParserServer).Ping(ctx, req.(*PingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Parser_ServiceDesc is the grpc.ServiceDesc for Parser service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var Parser_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FilesParse",
 			Handler:    _Parser_FilesParse_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Parser_Ping_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

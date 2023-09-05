@@ -5,6 +5,13 @@ option go_package = "github.com/xenedium/hps_logs_parser/gRPC";
 service Parser {
   rpc SSHParse(SSHRequest) returns (Response){}
   rpc FilesParse(FilesRequest) returns (Response){}
+  rpc Ping(PingRequest) returns (PingResponse){}
+}
+
+message PingRequest {
+}
+
+message PingResponse {
 }
 
 message SSHRequest {
