@@ -26,5 +26,7 @@ spec:
               value: iso8583parser:8080
             - name: REDIS_ADDRESS
               value: redis:6379
+            - name: GIN_MODE
+              value: release
       restartPolicy: Always
       
