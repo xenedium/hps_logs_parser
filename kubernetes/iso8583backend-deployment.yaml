@@ -24,5 +24,7 @@ spec:
           env:
             - name: GRPC_ADDRESS
               value: iso8583parser:8080
+            - name: REDIS_ADDRESS
+              value: redis:6379
       restartPolicy: Always
       
