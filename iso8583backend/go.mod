@@ -5,7 +5,7 @@ go 1.21.0
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/redis/go-redis/v9 v9.1.0
-	github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230904220708-16c93b2927c0
+	github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230905134338-5671a42c2634
 	google.golang.org/grpc v1.57.0
 )
 
