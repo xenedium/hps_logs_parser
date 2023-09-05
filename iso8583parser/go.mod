@@ -5,7 +5,7 @@ go 1.21.0
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/melbahja/goph v1.3.1
-	github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230904165941-6eff6424d914
+	github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230904220708-16c93b2927c0
 	golang.org/x/crypto v0.12.0
 	google.golang.org/grpc v1.57.0
 )
