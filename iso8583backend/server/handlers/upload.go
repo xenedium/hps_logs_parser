@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
-	"log"
 )
 
 func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
@@ -60,7 +59,6 @@ func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
 			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
 			return
 		}
-		log.Printf("Saving to redis: %s", parseRequestName[0])
 		if err := clients.RedisClient.Set(clients.RedisContext, parseRequestName[0], data, 0).Err(); err != nil {
 			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
 			return
