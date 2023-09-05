@@ -1,16 +1,11 @@
 package handlers
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"os"
-	"time"
 )
 
-func UploadFilesEndpoint() gin.HandlerFunc {
+func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		form, err := c.MultipartForm()
 		if err != nil {
@@ -30,17 +25,6 @@ func UploadFilesEndpoint() gin.HandlerFunc {
 			c.AbortWithStatusJSON(400, gin.H{"error": "missing required fields"})
 			return
 		}
-
-		conn, err := grpc.Dial(os.Getenv("GRPC_ADDRESS"), grpc.WithTransportCredentials(insecure.NewCredentials()))
-		if err != nil {
-			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
-			return
-		}
-		defer conn.Close()
-
-		client := protocolBuffer.NewParserClient(conn)
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
 
 		var filesRequest = &protocolBuffer.FilesRequest{Files: []*protocolBuffer.File{}}
 
@@ -62,7 +46,7 @@ func UploadFilesEndpoint() gin.HandlerFunc {
 			})
 		}
 
-		reply, err := client.FilesParse(ctx, filesRequest)
+		reply, err := clients.GrpcClient.FilesParse(clients.GrpcContext, filesRequest)
 
 		if err != nil {
 			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})

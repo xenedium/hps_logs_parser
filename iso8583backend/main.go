@@ -21,5 +21,12 @@ func main() {
 		}
 	}
 
+	if os.Getenv("REDIS_ADDRESS") == "" {
+		err := os.Setenv("REDIS_ADDRESS", "127.0.0.1:6379")
+		if err != nil {
+			log.Fatalf("Error setting REDIS_ADDRESS environment variable: %v", err)
+		}
+	}
+
 	server.NewServer(os.Getenv("BACKEND_ADDRESS")).Run()
 }

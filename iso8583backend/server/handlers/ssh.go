@@ -1,12 +1,8 @@
 package handlers
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"os"
 )
 
 type SSHEndpointIncomingData struct {
@@ -20,7 +16,7 @@ type SSHEndpointIncomingData struct {
 	ParseRequestName string `json:"parseRequestName"`
 }
 
-func SSHEndpoint() gin.HandlerFunc {
+func SSHEndpoint(clients *Clients) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var incomingData SSHEndpointIncomingData
 
@@ -34,19 +30,7 @@ func SSHEndpoint() gin.HandlerFunc {
 			return
 		}
 
-		conn, err := grpc.Dial(os.Getenv("GRPC_ADDRESS"), grpc.WithTransportCredentials(insecure.NewCredentials()))
-		if err != nil {
-			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
-			return
-		}
-		defer conn.Close()
-
-		client := protocolBuffer.NewParserClient(conn)
-		ctx, cancel := context.WithCancel(context.Background())
-
-		defer cancel()
-
-		reply, err := client.SSHParse(ctx, &protocolBuffer.SSHRequest{
+		reply, err := clients.GrpcClient.SSHParse(clients.GrpcContext, &protocolBuffer.SSHRequest{
 			Host:        incomingData.Host,
 			Port:        uint64(incomingData.Port),
 			User:        incomingData.User,
