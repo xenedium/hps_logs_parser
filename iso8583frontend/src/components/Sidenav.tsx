@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import {SegmentedToggle} from './SegmentedToggle.tsx';
 import {IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
-import {IParseResult} from "../types.ts";
+import {IParseResult} from '../types.ts';
 
 type SidenavProps = {
     parses: Pick<IParseResult, 'id' | 'name' | 'date'>[]

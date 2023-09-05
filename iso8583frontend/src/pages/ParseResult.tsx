@@ -49,7 +49,7 @@ export default function ParseResult({id}: ParseResultProps) {
 
     useEffect(() => {
         setParse({
-            id: "1",
+            id: '1',
             name: 'parse-result-1',
             date: new Date(),
             type: 'ssh',
