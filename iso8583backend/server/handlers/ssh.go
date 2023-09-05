@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
 )
@@ -45,6 +46,15 @@ func SSHEndpoint(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(200, gin.H{"message": reply.Messages})
+		data, err := json.Marshal(reply.Messages)
+		if err != nil {
+			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		if err := clients.RedisClient.Set(clients.RedisContext, incomingData.ParseRequestName, data, 0).Err(); err != nil {
+			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, gin.H{"message": "success"})
 	}
 }

@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
+	"log"
 )
 
 func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
@@ -21,8 +23,8 @@ func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
-		if len(parseRequestName) == 0 {
-			c.AbortWithStatusJSON(400, gin.H{"error": "missing required fields"})
+		if len(parseRequestName) != 1 || parseRequestName[0] == "" {
+			c.AbortWithStatusJSON(400, gin.H{"error": "parseRequestName is required and must be unique"})
 			return
 		}
 
@@ -53,6 +55,16 @@ func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(200, gin.H{"message": reply.Messages})
+		data, err := json.Marshal(reply.Messages)
+		if err != nil {
+			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		log.Printf("Saving to redis: %s", parseRequestName[0])
+		if err := clients.RedisClient.Set(clients.RedisContext, parseRequestName[0], data, 0).Err(); err != nil {
+			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, gin.H{"message": "success"})
 	}
 }
