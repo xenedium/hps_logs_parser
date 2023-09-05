@@ -101,13 +101,13 @@ type SSHRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Host        string  `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
-	Port        uint64  `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"`
-	User        string  `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
-	AbsoluteDir string  `protobuf:"bytes,4,opt,name=absoluteDir,proto3" json:"absoluteDir,omitempty"`
-	Password    *string `protobuf:"bytes,5,opt,name=password,proto3,oneof" json:"password,omitempty"`
-	PrivateKey  *string `protobuf:"bytes,6,opt,name=privateKey,proto3,oneof" json:"privateKey,omitempty"`
-	Passphrase  *string `protobuf:"bytes,7,opt,name=passphrase,proto3,oneof" json:"passphrase,omitempty"`
+	Host        string  `protobuf:"bytes,1,opt,name=host,proto3" json:"host"`
+	Port        uint64  `protobuf:"varint,2,opt,name=port,proto3" json:"port"`
+	User        string  `protobuf:"bytes,3,opt,name=user,proto3" json:"user"`
+	AbsoluteDir string  `protobuf:"bytes,4,opt,name=absoluteDir,proto3" json:"absoluteDir"`
+	Password    *string `protobuf:"bytes,5,opt,name=password,proto3,oneof" json:"password"`
+	PrivateKey  *string `protobuf:"bytes,6,opt,name=privateKey,proto3,oneof" json:"privateKey"`
+	Passphrase  *string `protobuf:"bytes,7,opt,name=passphrase,proto3,oneof" json:"passphrase"`
 }
 
 func (x *SSHRequest) Reset() {
@@ -196,7 +196,7 @@ type FilesRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Files []*File `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	Files []*File `protobuf:"bytes,1,rep,name=files,proto3" json:"files"`
 }
 
 func (x *FilesRequest) Reset() {
@@ -243,8 +243,8 @@ type File struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name    string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Content string `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	Name    string `protobuf:"bytes,1,opt,name=name,proto3" json:"name"`
+	Content string `protobuf:"bytes,2,opt,name=content,proto3" json:"content"`
 }
 
 func (x *File) Reset() {
@@ -298,7 +298,7 @@ type Response struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Messages []*Message `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
+	Messages []*Message `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages"`
 }
 
 func (x *Response) Reset() {
@@ -345,10 +345,10 @@ type MTI struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Version  uint32 `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
-	Class    uint32 `protobuf:"varint,2,opt,name=class,proto3" json:"class,omitempty"`
-	Function uint32 `protobuf:"varint,3,opt,name=function,proto3" json:"function,omitempty"`
-	Origin   uint32 `protobuf:"varint,4,opt,name=origin,proto3" json:"origin,omitempty"`
+	Version  uint32 `protobuf:"varint,1,opt,name=version,proto3" json:"version"`
+	Class    uint32 `protobuf:"varint,2,opt,name=class,proto3" json:"class"`
+	Function uint32 `protobuf:"varint,3,opt,name=function,proto3" json:"function"`
+	Origin   uint32 `protobuf:"varint,4,opt,name=origin,proto3" json:"origin"`
 }
 
 func (x *MTI) Reset() {
@@ -416,9 +416,9 @@ type Field struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Length int64  `protobuf:"varint,1,opt,name=length,proto3" json:"length,omitempty"`
-	Value  string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	Raw    string `protobuf:"bytes,3,opt,name=raw,proto3" json:"raw,omitempty"`
+	Length int64  `protobuf:"varint,1,opt,name=length,proto3" json:"length"`
+	Value  string `protobuf:"bytes,2,opt,name=value,proto3" json:"value"`
+	Raw    string `protobuf:"bytes,3,opt,name=raw,proto3" json:"raw"`
 }
 
 func (x *Field) Reset() {
@@ -479,12 +479,12 @@ type Message struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Mti         *MTI              `protobuf:"bytes,1,opt,name=mti,proto3" json:"mti,omitempty"`
-	Bitmap      string            `protobuf:"bytes,2,opt,name=bitmap,proto3" json:"bitmap,omitempty"`
-	Raw         string            `protobuf:"bytes,3,opt,name=raw,proto3" json:"raw,omitempty"`
-	LogFileName string            `protobuf:"bytes,4,opt,name=logFileName,proto3" json:"logFileName,omitempty"`
-	LineNumber  string            `protobuf:"bytes,5,opt,name=lineNumber,proto3" json:"lineNumber,omitempty"`
-	Fields      map[string]*Field `protobuf:"bytes,6,rep,name=fields,proto3" json:"fields,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Mti         *MTI              `protobuf:"bytes,1,opt,name=mti,proto3" json:"mti"`
+	Bitmap      string            `protobuf:"bytes,2,opt,name=bitmap,proto3" json:"bitmap"`
+	Raw         string            `protobuf:"bytes,3,opt,name=raw,proto3" json:"raw"`
+	LogFileName string            `protobuf:"bytes,4,opt,name=logFileName,proto3" json:"logFileName"`
+	LineNumber  string            `protobuf:"bytes,5,opt,name=lineNumber,proto3" json:"lineNumber"`
+	Fields      map[string]*Field `protobuf:"bytes,6,rep,name=fields,proto3" json:"fields" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (x *Message) Reset() {
