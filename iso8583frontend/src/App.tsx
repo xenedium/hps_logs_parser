@@ -8,7 +8,7 @@ import {IParseResult} from './types.ts';
 
 const mockData: Omit<IParseResult, 'messages'>[] = [
     {
-        id: 1,
+        id: '1',
         name: 'parse-result-1',
         date: new Date(),
         type: 'ssh',
@@ -18,7 +18,7 @@ const mockData: Omit<IParseResult, 'messages'>[] = [
 
 function App() {
     const [parses, setParses] = useState<Omit<IParseResult, 'messages'>[]>([]);
-    const [selection, setSelection] = useState<number | 'new-parse'>('new-parse');
+    const [selection, setSelection] = useState<string | 'new-parse'>('new-parse');
 
     useEffect(() => {
         // TODO: fetch parses from backend
@@ -32,7 +32,7 @@ function App() {
                 <Sidenav
                     parses={parses}
                     selection={selection}
-                    setSelection={(newSelection: number | 'new-parse') => setSelection(newSelection)}
+                    setSelection={(newSelection: string | 'new-parse') => setSelection(newSelection)}
                 />
             }
         >

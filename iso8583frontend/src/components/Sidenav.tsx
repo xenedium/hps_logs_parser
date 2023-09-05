@@ -11,11 +11,12 @@ import {
 } from '@mantine/core';
 import {SegmentedToggle} from './SegmentedToggle.tsx';
 import {IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
+import {IParseResult} from "../types.ts";
 
 type SidenavProps = {
-    parses: { id: number, name: string, date: Date }[]
-    selection: number | 'new-parse'
-    setSelection: (id: number | 'new-parse') => void
+    parses: Pick<IParseResult, 'id' | 'name' | 'date'>[]
+    selection: string | 'new-parse'
+    setSelection: (id: string | 'new-parse') => void
 }
 
 const useStyles = createStyles((theme) => ({
@@ -55,7 +56,7 @@ export function Sidenav({parses, selection, setSelection}: SidenavProps) {
 
     const {classes, cx} = useStyles()
 
-    const HandleDelete = (id: number) => {
+    const HandleDelete = (id: string) => {
         // TODO: Implement delete parse request
         alert(`Deleting parse request ${id}`)
     }

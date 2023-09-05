@@ -21,7 +21,7 @@ export interface Mti {
 }
 
 export interface IParseResult {
-    id: number;
+    id: string;
     name: string;
     date: Date;
     status: 'downloading' | 'parsing' | 'done' | 'error';
