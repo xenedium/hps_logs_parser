@@ -80,6 +80,8 @@ github.com/ugorji/go/codec v1.2.11 h1:BMaWp1Bb6fHwEtbplGBGJ498wD+LKlNSl25MjdZY4d
 github.com/ugorji/go/codec v1.2.11/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
 github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230905134338-5671a42c2634 h1:vboYJnqe/mmXnCj7p/NT1Mx/KixSpcD/UlCMeYkTgUQ=
 github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230905134338-5671a42c2634/go.mod h1:sXS573sJam3RO8uu9/8HyXMjU7d94jm9HxUW5WRxxdQ=
+github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230905163228-95876cd9eea4 h1:zhz8jyzHYMbPDgmR/jIGJjcPHx8LATZ/q01hqM1BaQk=
+github.com/xenedium/hps_logs_parser/gRPC v0.0.0-20230905163228-95876cd9eea4/go.mod h1:sXS573sJam3RO8uu9/8HyXMjU7d94jm9HxUW5WRxxdQ=
 golang.org/x/arch v0.0.0-20210923205945-b76863e36670/go.mod h1:5om86z9Hs0C8fWVUuoMHwpExlXzs5Tkyp9hOrfG7pp8=
 golang.org/x/arch v0.5.0 h1:jpGode6huXQxcskEIpOCvrU+tzo81b6+oFLUYXWtH/Y=
 golang.org/x/arch v0.5.0/go.mod h1:5om86z9Hs0C8fWVUuoMHwpExlXzs5Tkyp9hOrfG7pp8=
