@@ -36,10 +36,10 @@ const useStyles = createStyles((theme) => ({
 
 
 type ParseResultProps = {
-    id: string,
+    name: string,
 }
 
-export default function ParseResult({id}: ParseResultProps) {
+export default function ParseResult({name}: ParseResultProps) {
     const {classes} = useStyles()
     const [parse, setParse] = useState<IParseResult>()
     const [selectedTab, setSelectedTab] = useState<string | null>('search')
@@ -48,174 +48,12 @@ export default function ParseResult({id}: ParseResultProps) {
     useHotkeys([['ctrl+k', () => setSelectedTab(selectedTab === 'search' ? 'results' : 'search')]])
 
     useEffect(() => {
-        setParse({
-            id: '1',
-            name: 'parse-result-1',
-            date: new Date(),
-            type: 'ssh',
-            status: 'done',
-            messages: [
-                {
-                    'fields': {
-                        '102': {
-                            'length': '0',
-                            'value': '2000039098',
-                            'raw': ''
-                        },
-                        '002': {
-                            'length': '0',
-                            'value': '4301400012814919',
-                            'raw': ''
-                        },
-                        '004': {
-                            'length': '0',
-                            'value': '000000000000',
-                            'raw': ''
-                        },
-                        '059': {
-                            'length': '0',
-                            'value': '0000000326',
-                            'raw': ''
-                        },
-                        '127.025': {
-                            'length': '0',
-                            'value': '04000000000000000004',
-                            'raw': ''
-                        },
-                        '003': {
-                            'length': '0',
-                            'value': '310000',
-                            'raw': ''
-                        },
-                        '011': {
-                            'length': '0',
-                            'value': '000225',
-                            'raw': ''
-                        },
-                        '037': {
-                            'length': '0',
-                            'value': '000000599724',
-                            'raw': ''
-                        },
-                        '028': {
-                            'length': '0',
-                            'value': 'C00000000',
-                            'raw': ''
-                        },
-                        '039': {
-                            'length': '0',
-                            'value': '96',
-                            'raw': ''
-                        },
-                        '049': {
-                            'length': '0',
-                            'value': '404',
-                            'raw': ''
-                        },
-                        '053': {
-                            'length': '0',
-                            'value': '303030303030303033363C30303030303C30303030303032353032353F303030303',
-                            'raw': ''
-                        },
-                        '030': {
-                            'length': '0',
-                            'value': 'C00000000',
-                            'raw': ''
-                        }
-                    },
-                    'mti': {
-                        'version': 0,
-                        'class': 2,
-                        'function': 1,
-                        'origin': 0
-                    },
-                    'bitmap': 'F02000140A0088200000000004000002',
-                    'raw': '',
-                    'logFileName': '/tmp/3070292616/POSTILION.TRC000',
-                    'lineNumber': '3948'
-                },
-                {
-                    'fields': {
-                        '102': {
-                            'length': '0',
-                            'value': '7180003668',
-                            'raw': ''
-                        },
-                        '004': {
-                            'length': '0',
-                            'value': '000000000000',
-                            'raw': ''
-                        },
-                        '037': {
-                            'length': '0',
-                            'value': '000000599734',
-                            'raw': ''
-                        },
-                        '053': {
-                            'length': '0',
-                            'value': '303030303030303033313C30303030303C30303030303031383031383F303030303',
-                            'raw': ''
-                        },
-                        '059': {
-                            'length': '0',
-                            'value': '0000000331',
-                            'raw': ''
-                        },
-                        '028': {
-                            'length': '0',
-                            'value': 'C00000000',
-                            'raw': ''
-                        },
-                        '030': {
-                            'length': '0',
-                            'value': 'C00000000',
-                            'raw': ''
-                        },
-                        '039': {
-                            'length': '0',
-                            'value': '96',
-                            'raw': ''
-                        },
-                        '127.025': {
-                            'length': '0',
-                            'value': '04000000000000000004',
-                            'raw': ''
-                        },
-                        '002': {
-                            'length': '0',
-                            'value': '4301400038595500',
-                            'raw': ''
-                        },
-                        '003': {
-                            'length': '0',
-                            'value': '310000',
-                            'raw': ''
-                        },
-                        '011': {
-                            'length': '0',
-                            'value': '000148',
-                            'raw': ''
-                        },
-                        '049': {
-                            'length': '0',
-                            'value': '404',
-                            'raw': ''
-                        }
-                    },
-                    'mti': {
-                        'version': 0,
-                        'class': 2,
-                        'function': 1,
-                        'origin': 0
-                    },
-                    'bitmap': 'F02000140A0088200000000004000002',
-                    'raw': '',
-                    'logFileName': '/tmp/3070292616/POSTILION.TRCdd000',
-                    'lineNumber': '13581'
-                }
-            ]
-        })
-    }, [id])
+        fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/parse/${name}`)
+            .then(response => response.json())
+            .then(data => {
+                setParse(data)
+            })
+    }, [name])
 
     const [search, setSearch] = useState<Search>({
         fields: {
@@ -236,7 +74,7 @@ export default function ParseResult({id}: ParseResultProps) {
                     <>
                         <Container className={classes.parseContainer}>
                             <Title order={2} my="md">{parse.name}</Title>
-                            <Title order={2} my="md">{parse.date.toDateString()}</Title>
+                            <Title order={2} my="md">{new Date(parse.date).toDateString()}</Title>
                         </Container>
                         <Tabs value={selectedTab} onTabChange={setSelectedTab}>
                             <Tabs.List>
@@ -396,19 +234,20 @@ export default function ParseResult({id}: ParseResultProps) {
                                 <Accordion variant="separated">
                                     {
                                         parse.messages.map((message, index) => (
-                                            <Accordion.Item value={message.fields['037'].value} key={index}>
-                                                <Accordion.Control>
-                                                        037: {message.fields['037'].value} <br/>
+                                            message.fields['037']?.value &&
+                                                <Accordion.Item value={message.fields['037']?.value} key={index}>
+                                                    <Accordion.Control>
+                                                        037: {message.fields['037']?.value} <br/>
                                                         MTI: {message.mti.version}{message.mti.class}{message.mti.function}{message.mti.origin} <br/>
-                                                        Response: {message.fields['039'].value} ({GetResponseMessage(message.fields['039'].value)}) <br/>
-                                                </Accordion.Control>
-                                                <Accordion.Panel>
-                                                    <JsonInput
-                                                        value={JSON.stringify(message, null, 2)}
-                                                        autosize
-                                                    />
-                                                </Accordion.Panel>
-                                            </Accordion.Item>
+                                                        Response: {message.fields['039']?.value} ({GetResponseMessage(message.fields['039']?.value)}) <br/>
+                                                    </Accordion.Control>
+                                                    <Accordion.Panel>
+                                                        <JsonInput
+                                                            value={JSON.stringify(message, null, 2)}
+                                                            autosize
+                                                        />
+                                                    </Accordion.Panel>
+                                                </Accordion.Item>
                                         ))
                                     }
                                 </Accordion>

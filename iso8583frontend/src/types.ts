@@ -239,5 +239,5 @@ const ver1987Messages = {
 }
 
 export const GetResponseMessage = (code: string): string =>  {
-    return code.length === 3 ? ver1993Messages[code as keyof typeof ver1993Messages] : ver1987Messages[code as keyof typeof ver1987Messages];
+    return code?.length === 3 ? ver1993Messages[code as keyof typeof ver1993Messages] : ver1987Messages[code as keyof typeof ver1987Messages];
 }

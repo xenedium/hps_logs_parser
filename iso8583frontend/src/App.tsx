@@ -4,25 +4,15 @@ import {Sidenav} from './components/Sidenav.tsx';
 import {useEffect, useState} from 'react';
 import NewParse from './pages/NewParse.tsx';
 import ParseResult from './pages/ParseResult.tsx';
-import {IParseResult} from './types.ts';
-
-const mockData: Omit<IParseResult, 'messages'>[] = [
-    {
-        id: '1',
-        name: 'parse-result-1',
-        date: new Date(),
-        type: 'ssh',
-        status: 'done',
-    }
-]
 
 function App() {
-    const [parses, setParses] = useState<Omit<IParseResult, 'messages'>[]>([]);
+    const [parses, setParses] = useState<string[]>([]);
     const [selection, setSelection] = useState<string | 'new-parse'>('new-parse');
 
     useEffect(() => {
-        // TODO: fetch parses from backend
-        setParses(mockData)
+        fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/keys`)
+            .then(response => response.json())
+            .then(data => setParses(data.keys))
     }, [])
 
     return (
@@ -39,7 +29,7 @@ function App() {
             {
                 selection === 'new-parse' ?
                     <NewParse/> :
-                    <ParseResult id={selection} />
+                    <ParseResult name={selection} />
             }
         </AppShell>
     )

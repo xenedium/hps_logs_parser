@@ -11,10 +11,10 @@ import {
 } from '@mantine/core';
 import {SegmentedToggle} from './SegmentedToggle.tsx';
 import {IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
-import {IParseResult} from '../types.ts';
+
 
 type SidenavProps = {
-    parses: Pick<IParseResult, 'id' | 'name' | 'date'>[]
+    parses: string[]
     selection: string | 'new-parse'
     setSelection: (id: string | 'new-parse') => void
 }
@@ -91,22 +91,22 @@ export function Sidenav({parses, selection, setSelection}: SidenavProps) {
                             parses.map((parse) => {
                                 return (
                                     <UnstyledButton
-                                        key={parse.id}
-                                        onClick={() => selection !== parse.id && setSelection(parse.id)}
-                                        className={cx(classes.parseContainer, {[classes.parseContainerActive]: selection === parse.id})}
+                                        key={parse}
+                                        onClick={() => selection !== parse && setSelection(parse)}
+                                        className={cx(classes.parseContainer, {[classes.parseContainerActive]: selection === parse})}
                                     >
                                         <Flex
                                             align="center"
                                             gap="md"
                                         >
                                             <IconSearch size={18}/>
-                                            {parse.name}
+                                            {parse}
                                         </Flex>
                                         {
-                                            selection === parse.id &&
+                                            selection === parse &&
                                             <ActionIcon
                                                 variant="outline"
-                                                onClick={() => HandleDelete(parse.id)}
+                                                onClick={() => HandleDelete(parse)}
                                             >
                                                 <IconTrash size={18}/>
                                             </ActionIcon>
