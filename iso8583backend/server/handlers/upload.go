@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
+	"github.com/xenedium/hps_logs_parser/iso8583backend/server/types"
+	"time"
 )
 
 func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
@@ -54,7 +56,16 @@ func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
-		data, err := json.Marshal(reply.Messages)
+		parseResult := types.ParseResult{
+			Id:       parseRequestName[0],
+			Name:     parseRequestName[0],
+			Date:     time.Now(),
+			Status:   "done",
+			Type:     "upload",
+			Messages: reply.Messages,
+		}
+
+		data, err := json.Marshal(parseResult)
 		if err != nil {
 			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
 			return

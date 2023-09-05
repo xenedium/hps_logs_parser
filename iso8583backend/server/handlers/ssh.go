@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
+	"github.com/xenedium/hps_logs_parser/iso8583backend/server/types"
+	"time"
 )
 
 type SSHEndpointIncomingData struct {
@@ -46,7 +48,16 @@ func SSHEndpoint(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
-		data, err := json.Marshal(reply.Messages)
+		parseResult := types.ParseResult{
+			Id:       incomingData.ParseRequestName,
+			Name:     incomingData.ParseRequestName,
+			Date:     time.Now(),
+			Status:   "done",
+			Type:     "ssh",
+			Messages: reply.Messages,
+		}
+
+		data, err := json.Marshal(parseResult)
 		if err != nil {
 			c.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
 			return
