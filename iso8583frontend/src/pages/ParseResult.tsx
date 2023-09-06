@@ -15,7 +15,7 @@ import {
 } from '@mantine/core';
 import type {IParseResult, Search} from '../types.ts';
 import {useEffect, useState} from 'react';
-import {IconMessageCircle, IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
+import {IconAlertTriangle, IconMessageCircle, IconPlus, IconSearch, IconTrash} from '@tabler/icons-react';
 import {useHotkeys} from '@mantine/hooks';
 import {GetResponseMessage} from '../types.ts';
 
@@ -49,6 +49,7 @@ export default function ParseResult({name}: ParseResultProps) {
     useHotkeys([['ctrl+k', () => setSelectedTab(selectedTab === 'search' ? 'results' : 'search')]])
 
     useEffect(() => {
+        setParse(undefined)
         fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/parse/${name}`, {
             method: 'POST',
             headers: {
@@ -64,7 +65,7 @@ export default function ParseResult({name}: ParseResultProps) {
 
     const [search, setSearch] = useState<Search>({
         fields: {
-            '037': '',
+            '037': '000000000000',
         }
     })
 
@@ -224,14 +225,46 @@ export default function ParseResult({name}: ParseResultProps) {
                                                 }
                                             </tbody>
                                         </Table>
-                                        <Center>
+                                        <Center p="xl">
                                             <Button
-                                                mt="xl"
+                                                m="xl"
                                                 variant="light"
                                                 rightIcon={<IconSearch />}
                                                 onClick={HandleSearch}
                                             >
                                                 Search
+                                            </Button>
+                                            <Button
+                                                m="xl"
+                                                variant="light"
+                                                rightIcon={<IconTrash />}
+                                                onClick={() => {
+                                                    setSearch({
+                                                        fields: {
+                                                            '037': '000000000000',
+                                                        }
+                                                    })
+                                                    setSearchNumber(searchNumber + 1)
+                                                }}
+                                            >
+                                                Clear
+                                            </Button>
+                                            <Button
+                                                m="xl"
+                                                variant="light"
+                                                rightIcon={<IconAlertTriangle />}
+                                                onClick={() => {
+                                                    setSearch({
+                                                        fields: {
+                                                            '037': '',
+                                                        }
+                                                    })
+                                                    setSearchNumber(searchNumber + 1)
+                                                    setSelectedTab('results')
+                                                }}
+                                                color="red"
+                                            >
+                                                Get all
                                             </Button>
                                         </Center>
                                     </Container>
