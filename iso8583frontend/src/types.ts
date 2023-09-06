@@ -27,6 +27,7 @@ export interface IParseResult {
     status: 'downloading' | 'parsing' | 'done' | 'error';
     type: 'ssh' | 'upload'
     messages: Message[];
+    logFiles: string[];
 }
 
 export interface Search {

@@ -44,16 +44,23 @@ export default function ParseResult({name}: ParseResultProps) {
     const [parse, setParse] = useState<IParseResult>()
     const [selectedTab, setSelectedTab] = useState<string | null>('search')
     const [newFieldKey, setNewFieldKey] = useState<string>('')
+    const [searchNumber, setSearchNumber] = useState<number>(0)
 
     useHotkeys([['ctrl+k', () => setSelectedTab(selectedTab === 'search' ? 'results' : 'search')]])
 
     useEffect(() => {
-        fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/parse/${name}`)
+        fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/parse/${name}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(search)
+        })
             .then(response => response.json())
             .then(data => {
                 setParse(data)
             })
-    }, [name])
+    }, [searchNumber])
 
     const [search, setSearch] = useState<Search>({
         fields: {
@@ -62,9 +69,9 @@ export default function ParseResult({name}: ParseResultProps) {
     })
 
     const HandleSearch = () => {
-        // TODO: send search request
         console.log(search)
         setSelectedTab('results')
+        setSearchNumber(searchNumber + 1)
     }
 
     return (
@@ -131,7 +138,7 @@ export default function ParseResult({name}: ParseResultProps) {
                                                     })}
                                             />
                                             <MultiSelect
-                                                data={parse.messages.map((message) => message.logFileName)}
+                                                data={parse.logFiles?.map((logFile) => ({value: logFile, label: logFile})) || []}
                                                 label="Log files to search"
                                                 placeholder="Select log files to search"
                                                 searchable
