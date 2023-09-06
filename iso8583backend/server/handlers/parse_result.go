@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	protocolBuffer "github.com/xenedium/hps_logs_parser/gRPC"
 	"github.com/xenedium/hps_logs_parser/iso8583backend/server/types"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -56,8 +58,59 @@ func GetParseResult(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
-		parseResult.Messages = make([]*protocolBuffer.Message, 0)
+		responseMessages := make([]*protocolBuffer.Message, 0)
 
+		for _, message := range parseResult.Messages {
+			// if search is empty, return 0 messages
+			if search.MtiVersion == "" && search.MtiClass == "" && search.MtiFunction == "" && search.MtiOrigin == "" && search.Bitmap == "" && len(search.LogFiles) == 0 && len(search.Fields) == 0 {
+				break
+			}
+
+			if search.MtiVersion != "" && strconv.Itoa(int(message.Mti.Version)) != search.MtiVersion {
+				continue
+			}
+
+			if search.MtiClass != "" && strconv.Itoa(int(message.Mti.Class)) != search.MtiClass {
+				continue
+			}
+
+			if search.MtiFunction != "" && strconv.Itoa(int(message.Mti.Function)) != search.MtiFunction {
+				continue
+			}
+
+			if search.MtiOrigin != "" && strconv.Itoa(int(message.Mti.Origin)) != search.MtiOrigin {
+				continue
+			}
+
+			if search.Bitmap != "" && message.Bitmap != search.Bitmap {
+				continue
+			}
+
+			if len(search.LogFiles) != 0 && !stringInSlice(message.LogFileName, search.LogFiles) {
+				continue
+			}
+
+			if len(search.Fields) != 0 {
+				for key, value := range search.Fields {
+					fld := message.Fields[key]
+					if fld == nil || fld.Value != value {
+						continue
+					}
+					responseMessages = append(responseMessages, message)
+				}
+			}
+		}
+
+		parseResult.Messages = responseMessages
 		c.JSON(200, parseResult)
 	}
+}
+
+func stringInSlice(name string, files []string) bool {
+	for _, file := range files {
+		if strings.Contains(name, file) {
+			return true
+		}
+	}
+	return false
 }
