@@ -22,4 +22,5 @@ type ParseResult struct {
 	Status   string                    `json:"status"`
 	Type     string                    `json:"type"`
 	Messages []*protocolBuffer.Message `json:"messages"`
+	LogFiles []string                  `json:"logFiles"`
 }

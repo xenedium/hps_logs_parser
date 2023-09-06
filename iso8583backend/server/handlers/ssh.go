@@ -48,6 +48,19 @@ func SSHEndpoint(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
+		logFiles := make([]string, 0)
+		for _, message := range reply.Messages {
+			// not adding duplicates
+			func() {
+				for _, logFile := range logFiles {
+					if logFile == message.LogFileName {
+						return
+					}
+				}
+				logFiles = append(logFiles, message.LogFileName)
+			}()
+		}
+
 		parseResult := types.ParseResult{
 			Id:       incomingData.ParseRequestName,
 			Name:     incomingData.ParseRequestName,
@@ -55,6 +68,7 @@ func SSHEndpoint(clients *Clients) gin.HandlerFunc {
 			Status:   "done",
 			Type:     "ssh",
 			Messages: reply.Messages,
+			LogFiles: logFiles,
 		}
 
 		data, err := json.Marshal(parseResult)
