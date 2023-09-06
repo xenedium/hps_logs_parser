@@ -242,7 +242,7 @@ export default function ParseResult({name}: ParseResultProps) {
                                     {
                                         parse.messages.map((message, index) => (
                                             message.fields['037']?.value &&
-                                                <Accordion.Item value={message.fields['037']?.value} key={index}>
+                                                <Accordion.Item value={message.fields['037']?.value + index} key={index}>
                                                     <Accordion.Control>
                                                         037: {message.fields['037']?.value} <br/>
                                                         MTI: {message.mti.version}{message.mti.class}{message.mti.function}{message.mti.origin} <br/>
