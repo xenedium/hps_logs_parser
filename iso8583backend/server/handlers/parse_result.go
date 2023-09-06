@@ -93,7 +93,8 @@ func GetParseResult(clients *Clients) gin.HandlerFunc {
 			if len(search.Fields) != 0 {
 				for key, value := range search.Fields {
 					fld := message.Fields[key]
-					if fld == nil || fld.Value != value {
+
+					if fld == nil || !strings.Contains(fld.Value, value) {
 						continue
 					}
 					responseMessages = append(responseMessages, message)
