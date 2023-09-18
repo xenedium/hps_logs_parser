@@ -57,4 +57,5 @@ message Message {
   string logFileName        = 4;
   string lineNumber         = 5;
   map<string, Field> fields = 6;
+  string threadId           = 7;
 }
