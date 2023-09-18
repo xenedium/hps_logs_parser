@@ -14,6 +14,8 @@ func (p *parser) parseDumpPostilion(dumpPostilion *string, fileName string, line
 	}
 
 	dumpPostilionLines := strings.Split(*dumpPostilion, "\n")
+	parsedMessage.ThreadId = threadIdRegexMatcher.FindStringSubmatch(dumpPostilionLines[0])[1]
+	parsedMessage.Timestamp = timestampRegexMatcher.FindStringSubmatch(dumpPostilionLines[0])[1]
 	parsedMessage.Bitmap = strings.ReplaceAll(dumpPostilionBitMapRegexMatcher.FindStringSubmatch(dumpPostilionLines[1])[1], " ", "")
 	parsedMessage.Mti = &protocolBuffer.MTI{}
 	parsedMessage.Fields = make(map[string]*protocolBuffer.Field)
@@ -46,6 +48,8 @@ func (p *parser) parseDumpXml(dumpXml *string, fileName string, lineNumber int) 
 	}
 
 	dumpXmlLines := strings.Split(*dumpXml, "\n")
+	parsedMessage.ThreadId = threadIdRegexMatcher.FindStringSubmatch(dumpXmlLines[0])[1]
+	parsedMessage.Timestamp = timestampRegexMatcher.FindStringSubmatch(dumpXmlLines[0])[1]
 	parsedMessage.Bitmap = strings.ReplaceAll(dumpXmlBitMapRegexMatcher.FindStringSubmatch(dumpXmlLines[0])[1], " ", "")
 	//parsedMessage.SetMTI(dumpXmlMTIRegexMatcher.FindStringSubmatch(dumpXmlLines[2])[1])
 	parsedMessage.Mti = &protocolBuffer.MTI{}
@@ -112,6 +116,8 @@ func (p *parser) parseDumpIso(dumpIso *string, fileName string, lineNumber int) 
 		LineNumber:  strconv.Itoa(lineNumber),
 	}
 	dumpIsoLines := strings.Split(*dumpIso, "\n")
+	parsedMessage.ThreadId = threadIdRegexMatcher.FindStringSubmatch(dumpIsoLines[0])[1]
+	parsedMessage.Timestamp = timestampRegexMatcher.FindStringSubmatch(dumpIsoLines[0])[1]
 	parsedMessage.Mti = &protocolBuffer.MTI{}
 	parsedMessage.Fields = make(map[string]*protocolBuffer.Field)
 	//parsedMessage.Fields = make(map[string]types.Field)

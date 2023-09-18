@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/xenedium/hps_logs_parser/iso8583parser/server"
+	"fmt"
+	"github.com/xenedium/hps_logs_parser/iso8583parser/parser"
 	"log"
 	"os"
 )
@@ -13,7 +14,12 @@ func main() {
 			log.Fatalf("Error setting GRPC_ADDRESS environment variable: %v", err)
 		}
 	}
-	server.NewGRPCServer(os.Getenv("GRPC_ADDRESS"))
+	// server.NewGRPCServer(os.Getenv("GRPC_ADDRESS"))
+	tempDir := "../logs"
+	logParser := parser.NewParser(tempDir)
+	logParser.Parse(true)
+
+	fmt.Println("Done")
 }
 
 /*

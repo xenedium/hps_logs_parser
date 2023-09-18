@@ -2,6 +2,9 @@ package parser
 
 import "regexp"
 
+var threadIdRegexMatcher = regexp.MustCompile(`\d+ \d+ \d+ (\d+)\|\w\|`)
+var timestampRegexMatcher = regexp.MustCompile(`\d+ (\d+) \d+ \d+\|\w\|`)
+
 /*
 3006 091613057 00153921 00153928|4| -----------------------------------                                                           .
 3006 091613057 00153921 00153928|4| - BIT MAP     82 38 00 00 00 00 00 00 04 00 00 00 00 00 00 00                                 .
