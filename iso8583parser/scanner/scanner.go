@@ -14,6 +14,7 @@ type scanner struct {
 	DumpXmls       map[int]string
 	DumpIsos       map[int]string
 	DumpTlvBuffers map[int]string
+	DumpBuffers    map[int]string
 }
 type matcherHandlerArray struct {
 	Matcher *regexp.Regexp
@@ -52,12 +53,18 @@ func (s *scanner) Scan() {
 			Handler: getGenericHandler(endDumpTlvBuffer),
 			Array:   &s.DumpTlvBuffers,
 		},
+		{
+			Matcher: regexp.MustCompile(startDumpBuffer),
+			Handler: getGenericHandler(endDumpBuffer),
+			Array:   &s.DumpBuffers,
+		},
 	}
 
 	s.DumpIsos = make(map[int]string)
 	s.DumpPostilions = make(map[int]string)
 	s.DumpTlvBuffers = make(map[int]string)
 	s.DumpXmls = make(map[int]string)
+	s.DumpBuffers = make(map[int]string)
 
 	lineNumber := 0
 	for scanner.Scan() {

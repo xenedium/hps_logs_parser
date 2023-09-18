@@ -151,9 +151,40 @@ func (p *parser) parseDumpIso(dumpIso *string, fileName string, lineNumber int) 
 }
 
 func (p *parser) parseDumpTlvBuffer(dumpTlvBuffer *string, fileName string, lineNumber int) {
-	// parsedMessage := &types.Message{
+	// parsedMessage := &protocolBuffer.Message{
 	// 	 LogFileName: fileName,
+	// 	 LineNumber: strconv.Itoa(lineNumber),
 	// }
 
 	// p.ParsedDumpTlvBuffers = append(p.ParsedDumpTlvBuffers, parsedMessage)
+}
+
+func (p *parser) parseDumpBuffer(dumpBuffer *string, fileName string, lineNumber int) {
+	parsedMessage := &protocolBuffer.Message{
+		LogFileName: fileName,
+		LineNumber:  strconv.Itoa(lineNumber),
+	}
+
+	dumpBufferLines := strings.Split(*dumpBuffer, "\n")
+	parsedMessage.ThreadId = threadIdRegexMatcher.FindStringSubmatch(dumpBufferLines[0])[1]
+	parsedMessage.Timestamp = timestampRegexMatcher.FindStringSubmatch(dumpBufferLines[0])[1]
+	parsedMessage.Mti = &protocolBuffer.MTI{}
+	parsedMessage.Fields = make(map[string]*protocolBuffer.Field)
+
+	strBuilder := strings.Builder{}
+
+	for _, line := range dumpBufferLines {
+		if len(line) == 0 {
+			continue
+		}
+		if len(dumBufferRegexMatcher.FindStringSubmatch(line)) != 0 {
+			if dumBufferRegexMatcher.FindStringSubmatch(line)[1] == "E" { // The E of END in the last line
+				continue
+			}
+			hex := dumBufferRegexMatcher.FindStringSubmatch(line)[1]
+			strBuilder.WriteString(strings.ReplaceAll(hex, " ", ""))
+		}
+	}
+	parsedMessage.Raw = strBuilder.String()
+	p.ParsedDumpBuffers = append(p.ParsedDumpBuffers, parsedMessage)
 }

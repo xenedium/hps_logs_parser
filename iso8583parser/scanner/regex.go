@@ -38,3 +38,6 @@ const endDumpIso string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*DumpIso\(\)\s*\.`
 
 const startDumpTlvBuffer string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*PrintTlvBuffer\s*\(\)\s*\.`
 const endDumpTlvBuffer string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*PrintTlvBuffer\s*\(\)\s*\.`
+
+const startDumpBuffer string = `\d+ \d+ \d+ \d+\|\w\|\s*Start\s*dump_buffer\s*\(\)\s*\.`
+const endDumpBuffer string = `\d+ \d+ \d+ \d+\|\w\|\s*End\s*dump_buffer\s*\(VOID\)\s*\.`
