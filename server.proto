@@ -58,4 +58,5 @@ message Message {
   string lineNumber         = 5;
   map<string, Field> fields = 6;
   string threadId           = 7;
+  string timestamp          = 8;
 }
