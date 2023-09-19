@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"path"
+	"sort"
 	"strconv"
 	"sync"
 
@@ -113,20 +114,23 @@ func (p *parser) Parse(ignorePing bool) []*protocolBuffer.Message {
 		tempArray = append(tempArray, parsedMessage)
 	}
 
-	for _, parsedMessage := range tempArray {
-		isDupli, _ := isDuplicate(p.Messages, parsedMessage)
-		if isDupli != nil {
-			// TODO: MUST MERGE THE TWO MESSAGES
+	// TODO: MERGE THE RAW
 
+	for _, parsedMessage := range tempArray {
+		duplicateMessage, index := isDuplicate(p.Messages, parsedMessage)
+		if duplicateMessage != nil {
+			p.Messages[index] = mergeMessages(duplicateMessage, parsedMessage)
 			continue
 		}
 		p.Messages = append(p.Messages, parsedMessage)
 	}
 
+	sort.Slice(p.Messages, func(i, j int) bool {
+		return p.Messages[i].Timestamp < p.Messages[j].Timestamp
+	})
 	return p.Messages
 }
 
-// TODO: MUST MERGE RAW DUMPS WITH PARSED DUMPS BUT HOW ?????, THIS MUST BE DONE BEFORE REDUCING PHASE
 func isDuplicate(messages []*protocolBuffer.Message, parsedMessage *protocolBuffer.Message) (*protocolBuffer.Message, int) {
 	for index, message := range messages {
 		if parsedMessage.ThreadId == message.ThreadId &&
@@ -164,6 +168,20 @@ func diff(a, b string) (uint64, error) {
 		return 0, errors.New("error converting string to int")
 	}
 	return uint64(math.Abs(float64(x) - float64(y))), nil
+}
+
+func mergeMessages(a, b *protocolBuffer.Message) *protocolBuffer.Message {
+	// the mti, thread id, and fld 37 are the same
+	// we need to merge the fields, and the raw
+	for key, value := range b.Fields {
+		if a.Fields[key] == nil {
+			a.Fields[key] = value
+		}
+	}
+	if a.Raw == "" {
+		a.Raw = b.Raw
+	}
+	return a
 }
 
 type Parser = parser
