@@ -68,7 +68,7 @@ export function Sidenav({parses, selection, setSelection}: SidenavProps) {
                 }
                 alert('Something went wrong')
             })
-            .catch(_ => alert('Something went wrong'))
+            .catch(() => alert('Something went wrong'))
     }
 
     return (
