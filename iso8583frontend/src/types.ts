@@ -5,6 +5,8 @@ export interface Message {
     raw:         string;
     logFileName: string;
     lineNumber:  string;
+    threadId:    string;
+    timestamp:   string;
 }
 
 export interface Field {

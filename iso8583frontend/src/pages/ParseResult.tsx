@@ -281,6 +281,8 @@ export default function ParseResult({name}: ParseResultProps) {
                                                         037: {message.fields['037']?.value} <br/>
                                                         MTI: {message.mti.version}{message.mti.class}{message.mti.function}{message.mti.origin} <br/>
                                                         Response: {message.fields['039']?.value} ({GetResponseMessage(message.fields['039']?.value)}) <br/>
+                                                        ThreadId: {message.threadId} <br/>
+                                                        TimeStamp: {(message.timestamp)} <br/>
                                                     </Accordion.Control>
                                                     <Accordion.Panel>
                                                         <JsonInput
