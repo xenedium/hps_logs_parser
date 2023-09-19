@@ -56,6 +56,19 @@ func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
 			return
 		}
 
+		logFiles := make([]string, 0)
+		for _, message := range reply.Messages {
+			// not adding duplicates
+			func() {
+				for _, logFile := range logFiles {
+					if logFile == message.LogFileName {
+						return
+					}
+				}
+				logFiles = append(logFiles, message.LogFileName)
+			}()
+		}
+
 		parseResult := types.ParseResult{
 			Id:       parseRequestName[0],
 			Name:     parseRequestName[0],
@@ -63,6 +76,7 @@ func UploadFilesEndpoint(clients *Clients) gin.HandlerFunc {
 			Status:   "done",
 			Type:     "upload",
 			Messages: reply.Messages,
+			LogFiles: logFiles,
 		}
 
 		data, err := json.Marshal(parseResult)
