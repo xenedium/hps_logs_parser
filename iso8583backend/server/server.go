@@ -63,6 +63,7 @@ func NewServer(Address string) *Server {
 		v1.POST("/upload", handlers.UploadFilesEndpoint(clients))
 		v1.POST("/ssh", handlers.SSHEndpoint(clients))
 		v1.GET("/keys", handlers.GetKeys(clients))
+		v1.DELETE("/keys/:key", handlers.DeleteKey(clients))
 		v1.POST("/parse/:key", handlers.GetParseResult(clients))
 	}
 

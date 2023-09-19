@@ -57,8 +57,18 @@ export function Sidenav({parses, selection, setSelection}: SidenavProps) {
     const {classes, cx} = useStyles()
 
     const HandleDelete = (id: string) => {
-        // TODO: Implement delete parse request
-        alert(`Deleting parse request ${id}`)
+        fetch(`${import.meta.env.DEV ? 'http://127.0.0.1:8000' : ''}/api/v1/keys/${id}`, {
+            method: 'DELETE'
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    window.location.reload()
+                    return
+                }
+                alert('Something went wrong')
+            })
+            .catch(_ => alert('Something went wrong'))
     }
 
     return (
