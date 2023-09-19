@@ -62,7 +62,7 @@ export default function ParseResult({name}: ParseResultProps) {
                 setParse(data)
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchNumber])
+    }, [searchNumber, name])
 
     const [search, setSearch] = useState<Search>({
         fields: {
