@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"errors"
 	"fmt"
 	"github.com/xenedium/hps_logs_parser/iso8583parser/scanner"
 	"math"
@@ -114,7 +113,16 @@ func (p *parser) Parse(ignorePing bool) []*protocolBuffer.Message {
 		tempArray = append(tempArray, parsedMessage)
 	}
 
-	// TODO: MERGE THE RAW
+	for index, message := range tempArray {
+		for _, bufferDump := range p.ParsedDumpBuffers {
+			if message.LogFileName == bufferDump.LogFileName &&
+				message.ThreadId == bufferDump.ThreadId &&
+				diff(message.Timestamp, bufferDump.Timestamp) < 10 {
+				tempArray[index].Raw = bufferDump.Raw
+				break
+			}
+		}
+	}
 
 	for _, parsedMessage := range tempArray {
 		duplicateMessage, index := isDuplicate(p.Messages, parsedMessage)
@@ -128,6 +136,7 @@ func (p *parser) Parse(ignorePing bool) []*protocolBuffer.Message {
 	sort.Slice(p.Messages, func(i, j int) bool {
 		return p.Messages[i].Timestamp < p.Messages[j].Timestamp
 	})
+
 	return p.Messages
 }
 
@@ -140,7 +149,8 @@ func isDuplicate(messages []*protocolBuffer.Message, parsedMessage *protocolBuff
 			parsedMessage.Mti.Origin == message.Mti.Origin &&
 			parsedMessage.Mti.Version == message.Mti.Version &&
 			parsedMessage.Fields["037"] != nil && message.Fields["037"] != nil &&
-			parsedMessage.Fields["037"].Value == message.Fields["037"].Value {
+			parsedMessage.Fields["037"].Value == message.Fields["037"].Value &&
+			parsedMessage.Bitmap == message.Bitmap {
 			// DO I REALLY NEED TO CHECK THE TIMESTAMP?
 			// DOING SO MIGHT FLAG A MESSAGE AS DUPLICATE WHEN IT IS NOT
 			/*
@@ -158,16 +168,16 @@ func isDuplicate(messages []*protocolBuffer.Message, parsedMessage *protocolBuff
 	return nil, 0
 }
 
-func diff(a, b string) (uint64, error) {
+func diff(a, b string) uint64 {
 	x, err := strconv.Atoi(a)
 	if err != nil {
-		return 0, errors.New("error converting string to int")
+		return 0
 	}
 	y, err := strconv.Atoi(b)
 	if err != nil {
-		return 0, errors.New("error converting string to int")
+		return 0
 	}
-	return uint64(math.Abs(float64(x) - float64(y))), nil
+	return uint64(math.Abs(float64(x) - float64(y)))
 }
 
 func mergeMessages(a, b *protocolBuffer.Message) *protocolBuffer.Message {
@@ -180,6 +190,9 @@ func mergeMessages(a, b *protocolBuffer.Message) *protocolBuffer.Message {
 	}
 	if a.Raw == "" {
 		a.Raw = b.Raw
+	}
+	if a.Raw != "" && b.Raw != "" && a.Raw != b.Raw {
+		panic("Both raws are not empty")
 	}
 	return a
 }
