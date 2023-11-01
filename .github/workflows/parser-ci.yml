@@ -7,9 +7,10 @@ name: Parser CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
 
 env:
   # Use docker.io for Docker Hub if empty
