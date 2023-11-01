@@ -21,12 +21,15 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
-          env:
-            - name: GRPC_ADDRESS
-              value: iso8583parser:8080
-            - name: REDIS_ADDRESS
-              value: redis:6379
-            - name: GIN_MODE
-              value: release
+          envFrom:
+            - configMapRef:
+                name: iso8583-configmap
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
       restartPolicy: Always
       

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: iso8583-configmap
+data:
+  GRPC_ADDRESS: iso8583parser:8080
+  REDIS_ADDRESS: redis:6379
+  GIN_MODE: release

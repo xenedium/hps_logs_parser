@@ -21,5 +21,15 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: iso8583-configmap
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
       restartPolicy: Always
       
