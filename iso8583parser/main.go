@@ -8,6 +8,7 @@ import (
 
 func main() {
 	if os.Getenv("GRPC_ADDRESS") == "" {
+    log.Println("GRPC_ADDRESS not found, listening on all interfaces at :8080")
 		err := os.Setenv("GRPC_ADDRESS", ":8080")
 		if err != nil {
 			log.Fatalf("Error setting GRPC_ADDRESS environment variable: %v", err)
