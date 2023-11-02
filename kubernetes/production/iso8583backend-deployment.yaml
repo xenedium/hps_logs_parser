@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iso8583backend
+  labels:
+    app: iso8583backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iso8583backend
+  template:
+    metadata:
+      name: iso8583backend
+      labels:
+        app: iso8583backend
+    spec:
+      containers:
+        - name: iso8583backend
+          image: xenedium/iso8583backend:v1.0.4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: iso8583-configmap
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+      restartPolicy: Always
+      
