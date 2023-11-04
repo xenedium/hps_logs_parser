@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: iso8583frontend
-          image: xenedium/iso8583frontend:v1.0.4
+          image: xenedium/iso8583frontend:v1.0.9
           imagePullPolicy: Always
           ports:
             - containerPort: 80
