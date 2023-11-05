@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: iso8583parser
-          image: xenedium/iso8583parser:v1.0.4
+          image: xenedium/iso8583parser:v1.0.9
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
